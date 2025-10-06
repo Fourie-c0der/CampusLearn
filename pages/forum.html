@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Forum • CampusLearn™</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+    <link href="assets/css/styles.css" rel="stylesheet">
+
+  </head>
+  <body>
+
+    <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom">
+      <div class="container">
+        <a class="navbar-brand fw-bold" href="index.html">CampusLearn<span class="text-primary">™</span></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#clNav" aria-controls="clNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="clNav">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item"><a class="nav-link" href="/pages/topics.html">Topics</a></li>
+            <li class="nav-item"><a class="nav-link" href="/pages/forum.html">Forum</a></li>
+            <li class="nav-item"><a class="nav-link" href="/pages/resources.html">Resources</a></li>
+            <li class="nav-item"><a class="nav-link" href="/pages/faq.html">FAQ</a></li>
+            <li class="nav-item"><a class="nav-link" href="/pages/messages.html">Messages</a></li>
+          </ul>
+          <div class="d-flex gap-2">
+            <a href="/pages/login.html" class="btn btn-outline-primary btn-sm">Log in</a>
+            <a href="/pages/register.html" class="btn btn-primary btn-sm">Register</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container my-4">
+
+<div class="d-flex align-items-center justify-content-between mb-3">
+  <h1 class="h4">Public Forum</h1>
+  <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#askModal"><i class="fa-regular fa-circle-question me-2"></i>Ask (Anonymous)</button>
+</div>
+<ul class="nav nav-pills mb-3">
+  <li class="nav-item"><button class="nav-link active" data-bs-toggle="pill" data-bs-target="#trending">Trending</button></li>
+  <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#latest">Latest</button></li>
+  <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#unanswered">Unanswered</button></li>
+</ul>
+<div class="tab-content">
+  <div class="tab-pane fade show active" id="trending">
+    <div class="list-group">
+      <a class="list-group-item" href="#"><strong>How to approach ER modeling?</strong><div class="small text-muted">DB101 • 42 upvotes • 12 answers</div></a>
+      <a class="list-group-item" href="#"><strong>Difference between class and object diagrams?</strong><div class="small text-muted">SE202 • 35 upvotes • 8 answers</div></a>
+    </div>
+  </div>
+  <div class="tab-pane fade" id="latest">
+    <div class="list-group">
+      <a class="list-group-item" href="#"><strong>Best resources for Scrum ceremonies?</strong><div class="small text-muted">ITM300 • 3 upvotes • 0 answers</div></a>
+    </div>
+  </div>
+  <div class="tab-pane fade" id="unanswered">
+    <div class="alert alert-secondary">No unanswered questions right now.</div>
+  </div>
+</div>
+
+<!-- Ask Modal -->
+<div class="modal fade" id="askModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Ask the community (anonymous)</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form class="row g-3">
+          <div class="col-12">
+            <label class="form-label">Module/Category</label>
+            <input class="form-control" placeholder="e.g., DB101">
+          </div>
+          <div class="col-12">
+            <label class="form-label">Your Question</label>
+            <textarea class="form-control" rows="4" placeholder="Ask anything…"></textarea>
+          </div>
+          <div class="col-12 d-flex justify-content-between">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="subscribeAnon" checked>
+              <label for="subscribeAnon" class="form-check-label small">Notify me of answers</label>
+            </div>
+            <button class="btn btn-primary">Post Question</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+    </main>
+
+    <footer class="mt-5 py-4 border-top">
+      <div class="container text-center text-muted small">
+        <div>© 2025 CampusLearn™ – Peer-Powered Learning for Belgium Campus</div>
+        <div class="mt-2">Prototype demo. Not connected to real services.</div>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/app.js"></script>
+
+  </body>
+</html>

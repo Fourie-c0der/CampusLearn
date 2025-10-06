@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Student Dashboard • CampusLearn™</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+    <link href="assets/css/styles.css" rel="stylesheet">
+
+  </head>
+  <body>
+
+    <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom">
+      <div class="container">
+        <a class="navbar-brand fw-bold" href="index.html">CampusLearn<span class="text-primary">™</span></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#clNav" aria-controls="clNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="clNav">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item"><a class="nav-link" href="topics.html">Topics</a></li>
+            <li class="nav-item"><a class="nav-link" href="forum.html">Forum</a></li>
+            <li class="nav-item"><a class="nav-link" href="resources.html">Resources</a></li>
+            <li class="nav-item"><a class="nav-link" href="faq.html">FAQ</a></li>
+            <li class="nav-item"><a class="nav-link" href="messages.html">Messages</a></li>
+          </ul>
+          <div class="d-flex gap-2">
+            <a href="login.html" class="btn btn-outline-primary btn-sm">Log in</a>
+            <a href="register.html" class="btn btn-primary btn-sm">Register</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container my-4">
+
+<h1 class="h4 mb-4">Welcome, Student</h1>
+<div class="row g-4">
+  <div class="col-md-4">
+    <div class="card h-100">
+      <div class="card-body">
+        <h5 class="card-title">My Topics</h5>
+        <p class="card-text">Create help topics or subscribe to existing ones.</p>
+        <a href="topics.html" class="btn btn-primary btn-sm">Manage topics</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card h-100">
+      <div class="card-body">
+        <h5 class="card-title">My Messages</h5>
+        <p class="card-text">Continue private conversations with matched tutors.</p>
+        <a href="messages.html" class="btn btn-outline-primary btn-sm">Go to messages</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card h-100">
+      <div class="card-body">
+        <h5 class="card-title">Resources</h5>
+        <p class="card-text">Access uploaded materials and interactive exercises.</p>
+        <a href="resources.html" class="btn btn-outline-secondary btn-sm">Browse resources</a>
+      </div>
+    </div>
+  </div>
+</div>
+<section class="mt-5">
+  <h2 class="h5">Recent Tutor Responses</h2>
+  <div class="list-group">
+    <a class="list-group-item list-group-item-action" href="topic-detail.html">SE202: Help with UML diagrams — <span class="text-muted">answered by Tutor A</span></a>
+    <a class="list-group-item list-group-item-action" href="topic-detail.html">DB101: Normalization question — <span class="text-muted">awaiting reply</span></a>
+  </div>
+</section>
+
+    </main>
+
+    <footer class="mt-5 py-4 border-top">
+      <div class="container text-center text-muted small">
+        <div>© 2025 CampusLearn™ – Peer-Powered Learning for Belgium Campus</div>
+        <div class="mt-2">Prototype demo. Not connected to real services.</div>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/app.js"></script>
+
+  </body>
+</html>
