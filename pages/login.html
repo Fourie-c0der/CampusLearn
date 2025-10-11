@@ -8,7 +8,6 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
     <link rel="icon" href="/assets/images/Favicon.png" type="image/x-icon">
     <style>
-      
       body {
         background-image: url('https://www.transparenttextures.com/patterns/cubes.png'), url('https://img.freepik.com/premium-vector/hand-drawn-set-elements-abstract-arrows-ribbons-hearts-stars-crowns-monsters-other-elements-hand-drawn-style-concept-design-scribble-illustration-vector-illustration_607987-917.jpg');
         min-height: 100vh;
@@ -19,7 +18,6 @@
         background-repeat: repeat, no-repeat;
         background-color: #f5f7fa;
       }
-
       .login-container {
         flex: 1;
         display: flex;
@@ -58,7 +56,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(13, 110, 253, 0.5); /* Reduced opacity to 0.5 */
+        background-color: rgba(13, 110, 253, 0.5);
         z-index: 1;
       }
       .login-info h2, .login-info p {
@@ -104,41 +102,40 @@
     </style>
   </head>
   <body>
-<nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom sticky-top">
-  <div class="container">
-    <a class="navbar-brand fw-bold" href="../index.html">CampusLearn<span class="text-primary">™</span></a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#clNav" aria-controls="clNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="clNav">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item"><a class="nav-link" href="topics.html">Topics</a></li>
-        <li class="nav-item"><a class="nav-link" href="forum.html">Forum</a></li>
-        <li class="nav-item"><a class="nav-link" href="resources.html">Resources</a></li>
-        <li class="nav-item"><a class="nav-link" href="faq.html">FAQ</a></li>
-        <li class="nav-item"><a class="nav-link" href="messages.html">Messages</a></li>
-      </ul>
-      <div class="d-flex gap-2">
-        <a href="login.html" class="btn btn-outline-primary btn-sm">Log in</a>
-        <a href="register.html" class="btn btn-primary btn-sm">Register</a>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom sticky-top">
+      <div class="container">
+        <a class="navbar-brand fw-bold" href="../index.html">CampusLearn<span class="text-primary">™</span></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#clNav" aria-controls="clNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="clNav">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item"><a class="nav-link" href="topics.html">Topics</a></li>
+            <li class="nav-item"><a class="nav-link" href="forum.html">Forum</a></li>
+            <li class="nav-item"><a class="nav-link" href="resources.html">Resources</a></li>
+            <li class="nav-item"><a class="nav-link" href="faq.html">FAQ</a></li>
+            <li class="nav-item"><a class="nav-link" href="messages.html">Messages</a></li>
+          </ul>
+          <div class="d-flex gap-2">
+            <a href="login.html" class="btn btn-outline-primary btn-sm">Log in</a>
+            <a href="register.html" class="btn btn-primary btn-sm">Register</a>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-</nav>
-
+    </nav>
 
     <main class="container my-4 login-container">
       <div class="row login-card">
         <div class="col-md-6 login-form">
           <h1 class="h3 mb-4">Log in</h1>
-          <form class="row g-3">
+          <form id="loginForm" class="row g-3">
             <div class="col-12">
-              <label class="form-label">Belgium Campus Email</label>
-              <input type="email" class="form-control" placeholder="name@belgiumcampus.ac.za" required>
+              <label class="form-label" for="email">Belgium Campus Email</label>
+              <input type="email" id="email" class="form-control" placeholder="name@belgiumcampus.ac.za" required>
             </div>
             <div class="col-12">
-              <label class="form-label">Password</label>
-              <input type="password" class="form-control" required>
+              <label class="form-label" for="password">Password</label>
+              <input type="password" id="password" class="form-control" required>
             </div>
             <div class="col-12 d-flex justify-content-between align-items-center">
               <div class="form-check">
@@ -167,6 +164,53 @@
       </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/supabase.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const supabaseUrl = 'https://peexuuzunrhbimpemdwz.supabase.co';
+    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBlZXh1dXp1bnJoYmltcGVtZHd6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAxMzk3MjYsImV4cCI6MjA3NTcxNTcyNn0.sOOZfxsQvBF35vijxgO3K5nedKww0fyWKBXiebyfAB0';
+    const supabase = supabase.createClient(supabaseUrl, supabaseAnonKey);
+
+    console.log('Supabase initialized, trying to log in...');
+    const form = document.getElementById('loginForm');
+    if (!form) {
+      console.error('Login form not found!');
+      alert('Something went wrong, please check the console.');
+      return;
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      if (!email.endsWith('@belgiumcampus.ac.za')) {
+        alert('Please use a valid Belgium Campus email address.');
+        return;
+      }
+
+      console.log('Attempting login with:', { email, password });
+      try {
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) {
+          console.error('Login error:', error);
+          alert('Login failed: ' + error.message);
+        } else if (data?.user) {
+          console.log('User logged in:', data.user);
+          alert('Login successful! Redirecting...');
+          window.location.href = 'student-dashboard.html';
+        } else {
+          console.warn('No user data returned');
+          alert('Unexpected error, please try again.');
+        }
+      } catch (err) {
+        console.error('Unexpected error during login:', err);
+        alert('An unexpected error occurred. Check the console for details.');
+      }
+    });
+  });
+</script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/app.js"></script>
   </body>
