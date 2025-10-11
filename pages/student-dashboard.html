@@ -7,13 +7,32 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
     <link href="assets/css/styles.css" rel="stylesheet">
-
+    <link rel="icon" href="/assets/images/Favicon.png" type="image/x-icon">
+    <style>
+      .sidebar {
+        position: sticky;
+        top: 5rem; /* Adjusted to account for navbar height (~56px) */
+        height: fit-content;
+      }
+      .progress {
+        height: 1.5rem;
+      }
+      body {
+        background-image: url('https://www.transparenttextures.com/patterns/cubes.png'), url('https://img.freepik.com/premium-vector/hand-drawn-set-elements-abstract-arrows-ribbons-hearts-stars-crowns-monsters-other-elements-hand-drawn-style-concept-design-scribble-illustration-vector-illustration_607987-917.jpg');
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        background-blend-mode: overlay;
+        background-size: auto, cover;
+        background-repeat: repeat, no-repeat;
+        background-color: #f5f7fa;
+      }
+    </style>
   </head>
   <body>
-
-    <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom sticky-top">
       <div class="container">
-        <a class="navbar-brand fw-bold" href="index.html">CampusLearn<span class="text-primary">™</span></a>
+        <a class="navbar-brand fw-bold" href="../index.html">CampusLearn<span class="text-primary">™</span></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#clNav" aria-controls="clNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -34,45 +53,147 @@
     </nav>
 
     <main class="container my-4">
+      <div class="row">
+        <div class="col-lg-9">
+          <h1 class="h4 mb-4">Welcome, Student</h1>
 
-<h1 class="h4 mb-4">Welcome, Student</h1>
-<div class="row g-4">
-  <div class="col-md-4">
-    <div class="card h-100">
-      <div class="card-body">
-        <h5 class="card-title">My Topics</h5>
-        <p class="card-text">Create help topics or subscribe to existing ones.</p>
-        <a href="topics.html" class="btn btn-primary btn-sm">Manage topics</a>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-4">
-    <div class="card h-100">
-      <div class="card-body">
-        <h5 class="card-title">My Messages</h5>
-        <p class="card-text">Continue private conversations with matched tutors.</p>
-        <a href="messages.html" class="btn btn-outline-primary btn-sm">Go to messages</a>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-4">
-    <div class="card h-100">
-      <div class="card-body">
-        <h5 class="card-title">Resources</h5>
-        <p class="card-text">Access uploaded materials and interactive exercises.</p>
-        <a href="resources.html" class="btn btn-outline-secondary btn-sm">Browse resources</a>
-      </div>
-    </div>
-  </div>
-</div>
-<section class="mt-5">
-  <h2 class="h5">Recent Tutor Responses</h2>
-  <div class="list-group">
-    <a class="list-group-item list-group-item-action" href="topic-detail.html">SE202: Help with UML diagrams — <span class="text-muted">answered by Tutor A</span></a>
-    <a class="list-group-item list-group-item-action" href="topic-detail.html">DB101: Normalization question — <span class="text-muted">awaiting reply</span></a>
-  </div>
-</section>
+          <section id="clProfileSummary" class="mb-4">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Profile Summary</h5>
+                <p><strong>Name:</strong> Jane Doe</p>
+                <p><strong>Program:</strong> BIT Year 2</p>
+                <p><strong>Active Topics:</strong> 5 | <strong>Messages:</strong> 12 | <strong>Tutoring Sessions:</strong> 3</p>
+                <a href="profile.html" class="btn btn-outline-primary btn-sm">Edit Profile</a>
+              </div>
+            </div>
+          </section>
 
+          <section class="row g-4" id="clQuickAccess">
+            <div class="col-md-4">
+              <div class="card h-100">
+                <div class="card-body">
+                  <h5 class="card-title"><i class="fa-solid fa-book me-2"></i>My Topics</h5>
+                  <p class="card-text">Create help topics or subscribe to existing ones.</p>
+                  <a href="topics.html" class="btn btn-primary btn-sm">Manage topics</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card h-100">
+                <div class="card-body">
+                  <h5 class="card-title"><i class="fa-solid fa-envelope me-2"></i>My Messages</h5>
+                  <p class="card-text">Continue private conversations with matched tutors.</p>
+                  <a href="messages.html" class="btn btn-outline-primary btn-sm">Go to messages</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card h-100">
+                <div class="card-body">
+                  <h5 class="card-title"><i class="fa-solid fa-file-alt me-2"></i>Resources</h5>
+                  <p class="card-text">Access uploaded materials and interactive exercises.</p>
+                  <a href="resources.html" class="btn btn-outline-secondary btn-sm">Browse resources</a>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="mt-5" id="clTutorResponses">
+            <h2 class="h5 mb-3">Recent Tutor Responses</h2>
+            <div class="list-group">
+              <a class="list-group-item list-group-item-action" href="topic-detail.html">SE202: Help with UML diagrams — <span class="text-muted">answered by Tutor A, 2 hours ago</span></a>
+              <a class="list-group-item list-group-item-action" href="topic-detail.html">DB101: Normalization question — <span class="text-muted">awaiting reply</span></a>
+              <a class="list-group-item list-group-item-action" href="topic-detail.html">CS101: Python loops issue — <span class="text-muted">answered by Tutor B, 1 day ago</span></a>
+            </div>
+          </section>
+
+          <section class="mt-5" id="clUpcomingSessions">
+            <h2 class="h5 mb-3">Upcoming Tutoring Sessions</h2>
+            <div class="list-group">
+              <div class="list-group-item">
+                <h6 class="mb-1">SE202: UML Diagram Review</h6>
+                <p class="mb-1 small">Tutor: Sarah M. | Date: Oct 12, 2025, 10:00 AM | Platform: Zoom</p>
+                <a href="session-detail.html?id=1" class="btn btn-outline-primary btn-sm">Join Session</a>
+              </div>
+              <div class="list-group-item">
+                <h6 class="mb-1">DB101: Database Normalization</h6>
+                <p class="mb-1 small">Tutor: James K. | Date: Oct 13, 2025, 2:00 PM | Platform: Microsoft Teams</p>
+                <a href="session-detail.html?id=2" class="btn btn-outline-primary btn-sm">Join Session</a>
+              </div>
+            </div>
+          </section>
+
+          <section class="mt-5" id="clProgressTracker">
+            <h2 class="h5 mb-3">Progress Tracker</h2>
+            <div class="card">
+              <div class="card-body">
+                <h6>SE202: Software Engineering</h6>
+                <div class="progress mb-2">
+                  <div class="progress-bar bg-success" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">75% Complete</div>
+                </div>
+                <h6>DB101: Database Systems</h6>
+                <div class="progress mb-2">
+                  <div class="progress-bar bg-info" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50% Complete</div>
+                </div>
+                <a href="progress.html" class="btn btn-outline-secondary btn-sm">View All Progress</a>
+              </div>
+            </div>
+          </section>
+
+          <section class="mt-5" id="clRecommendedResources">
+            <h2 class="h5 mb-3">Recommended Resources</h2>
+            <div class="row g-4">
+              <div class="col-md-4">
+                <div class="card h-100">
+                  <img src="https://images.unsplash.com/photo-1614741118887-7a4ee193a5fa?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=687" class="card-img-top" alt="Python Guide">
+                  <div class="card-body">
+                    <h5 class="card-title">Python Programming Guide</h5>
+                    <p class="card-text">Comprehensive guide for Python basics.</p>
+                    <a href="resource.html?id=1" class="btn btn-outline-secondary btn-sm">View Resource</a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="card h-100">
+                  <img src="https://images.unsplash.com/photo-1532012197267-da84d127e765" class="card-img-top" alt="UML Tutorial">
+                  <div class="card-body">
+                    <h5 class="card-title">UML Diagram Tutorial</h5>
+                    <p class="card-text">Step-by-step UML diagramming techniques.</p>
+                    <a href="resource.html?id=2" class="btn btn-outline-secondary btn-sm">View Resource</a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="card h-100">
+                  <img src="https://images.unsplash.com/photo-1639066648921-82d4500abf1a?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=687" class="card-img-top" alt="Database Notes">
+                  <div class="card-body">
+                    <h5 class="card-title">Database Normalization Notes</h5>
+                    <p class="card-text">Key concepts in database normalization.</p>
+                    <a href="resource.html?id=3" class="btn btn-outline-secondary btn-sm">View Resource</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="col-lg-3">
+          <aside class="sidebar" id="clQuickActions">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Quick Actions</h5>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item"><a href="ask-question.html" class="text-decoration-none">Ask a New Question</a></li>
+                  <li class="list-group-item"><a href="schedule-session.html" class="text-decoration-none">Schedule a Session</a></li>
+                  <li class="list-group-item"><a href="profile.html" class="text-decoration-none">Update Profile</a></li>
+                  <li class="list-group-item"><a href="settings.html" class="text-decoration-none">Account Settings</a></li>
+                </ul>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
     </main>
 
     <footer class="mt-5 py-4 border-top">
@@ -84,6 +205,5 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/app.js"></script>
-
   </body>
 </html>
