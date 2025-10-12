@@ -9,7 +9,8 @@
     <link rel="icon" href="/assets/images/Favicon.png" type="image/x-icon">
     <style>
       body {
-        background-image: url('https://www.transparenttextures.com/patterns/cubes.png'), url('https://img.freepik.com/premium-vector/hand-drawn-set-elements-abstract-arrows-ribbons-hearts-stars-crowns-monsters-other-elements-hand-drawn-style-concept-design-scribble-illustration-vector-illustration_607987-917.jpg');
+        background-image: url('https://www.transparenttextures.com/patterns/cubes.png'),
+          url('https://img.freepik.com/premium-vector/hand-drawn-set-elements-abstract-arrows-ribbons-hearts-stars-crowns-monsters-other-elements-hand-drawn-style-concept-design-scribble-illustration-vector-illustration_607987-917.jpg');
         min-height: 100vh;
         display: flex;
         flex-direction: column;
@@ -59,7 +60,8 @@
         background-color: rgba(13, 110, 253, 0.5);
         z-index: 1;
       }
-      .login-info h2, .login-info p {
+      .login-info h2,
+      .login-info p {
         position: relative;
         z-index: 2;
       }
@@ -95,11 +97,15 @@
         .login-card {
           flex-direction: column;
         }
-        .login-form, .login-info {
+        .login-form,
+        .login-info {
           padding: 20px;
         }
       }
     </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src = "../Student.js"></script>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom sticky-top">
@@ -145,7 +151,8 @@
               <a href="#" class="small text-decoration-none">Forgot password?</a>
             </div>
             <div class="col-12">
-              <button class="btn btn-primary w-100" type="submit">Log in</button>
+              <!-- ✅ Added id to login button -->
+              <button id="loginBtn" class="btn btn-primary w-100" type="submit">Log in</button>
               <a class="btn btn-outline-secondary w-100 mt-2" href="register.html">Create account</a>
             </div>
           </form>
@@ -162,56 +169,6 @@
         <div>© 2025 CampusLearn™ – Peer-Powered Learning for Belgium Campus</div>
         <div class="mt-2">Prototype demo. Not connected to real services.</div>
       </div>
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/supabase.min.js"></script>
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const supabaseUrl = 'https://peexuuzunrhbimpemdwz.supabase.co';
-    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBlZXh1dXp1bnJoYmltcGVtZHd6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAxMzk3MjYsImV4cCI6MjA3NTcxNTcyNn0.sOOZfxsQvBF35vijxgO3K5nedKww0fyWKBXiebyfAB0';
-    const supabase = supabase.createClient(supabaseUrl, supabaseAnonKey);
-
-    console.log('Supabase initialized, trying to log in...');
-    const form = document.getElementById('loginForm');
-    if (!form) {
-      console.error('Login form not found!');
-      alert('Something went wrong, please check the console.');
-      return;
-    }
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-
-      if (!email.endsWith('@belgiumcampus.ac.za')) {
-        alert('Please use a valid Belgium Campus email address.');
-        return;
-      }
-
-      console.log('Attempting login with:', { email, password });
-      try {
-        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-        if (error) {
-          console.error('Login error:', error);
-          alert('Login failed: ' + error.message);
-        } else if (data?.user) {
-          console.log('User logged in:', data.user);
-          alert('Login successful! Redirecting...');
-          window.location.href = 'student-dashboard.html';
-        } else {
-          console.warn('No user data returned');
-          alert('Unexpected error, please try again.');
-        }
-      } catch (err) {
-        console.error('Unexpected error during login:', err);
-        alert('An unexpected error occurred. Check the console for details.');
-      }
-    });
-  });
-</script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/app.js"></script>
+    </footer> 
   </body>
 </html>

@@ -122,6 +122,7 @@
         }
       }
     </style>
+
   </head>
   <body>
     <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom sticky-top">
@@ -209,70 +210,7 @@
       </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/supabase.min.js"></script>
-    <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        const supabaseUrl = 'YOUR_SUPABASE_URL';
-        const supabaseAnonKey = 'YOUR_SUPABASE_ANON_KEY';
-        const supabase = supabase.createClient(supabaseUrl, supabaseAnonKey);
-
-        const form = document.querySelector('form');
-        form.addEventListener('submit', async (e) => {
-          e.preventDefault();
-
-          const firstName = form.querySelector('input[type="text"]:nth-child(2)').value;
-          const lastName = form.querySelector('input[type="text"]:nth-child(4)').value;
-          const email = form.querySelector('input[type="email"]').value;
-          const programme = form.querySelector('select').value;
-          const modules = form.querySelector('input[placeholder="e.g., Software Engineering, Databases"]').value;
-          const password = form.querySelector('input[type="password"]:nth-child(10)').value;
-          const confirmPassword = form.querySelector('input[type="password"]:nth-child(12)').value;
-
-          // Validation
-          if (!email.endsWith('@belgiumcampus.ac.za')) {
-            alert('Please use a valid Belgium Campus email address.');
-            return;
-          }
-          if (password !== confirmPassword) {
-            alert('Passwords do not match.');
-            return;
-          }
-          if (!password || password.length < 6) {
-            alert('Password must be at least 6 characters long.');
-            return;
-          }
-
-          // Sign up with Supabase Auth
-          const { data, error } = await supabase.auth.signUp({
-            email: email,
-            password: password,
-          });
-
-          if (error) {
-            alert('Registration failed: ' + error.message);
-          } else {
-            // Optionally insert into students table
-            const { error: insertError } = await supabase.from('students').insert({
-              full_name: `${firstName} ${lastName}`,
-              email: email,
-              programme: programme,
-              created_at: new Date().toISOString(),
-              password: password, // Note: Store hashed password in production via backend
-            });
-
-            if (insertError) {
-              console.error('Failed to insert into students table:', insertError);
-              alert('Registration successful, but profile data save failed. Contact support.');
-            } else {
-              console.log('User registered and profile saved:', data.user);
-              alert('Registration successful! Please check your email to verify your account. Redirecting to login...');
-              window.location.href = 'login.html';
-            }
-          }
-        });
-      });
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/app.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../Register.js"></script>  
   </body>
 </html>
