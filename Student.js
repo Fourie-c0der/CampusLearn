@@ -1,27 +1,30 @@
-class Student {
-  constructor(studentId, name, email, course) {
-    this.studentId = studentId;
-    this.name = name;
-    this.email = email; // must be @belgiumcampus.ac.za
-    this.course = course;
-  }
+// 1️⃣ Import Supabase client for Node.js
+const { createClient } = require('@supabase/supabase-js');
 
-  register() {
-    console.log(`${this.name} has registered.`);
-  }
+// 2️⃣ Initialize Supabase client
+const supabaseUrl = 'https://peexuuzunrhbimpemdwz.supabase.co';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBlZXh1dXp1bnJoYmltcGVtZHd6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAxMzk3MjYsImV4cCI6MjA3NTcxNTcyNn0.sOOZfxsQvBF35vijxgO3K5nedKww0fyWKBXiebyfAB0';
 
-  updateProfile(newCourse) {
-    this.course = newCourse;
-  }
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-  subscribeToTopic(topic) {
-    console.log(`${this.name} subscribed to ${topic.title}`);
-  }
+// 3️⃣ Function to check if a student exists
+async function checkStudent(name) {
+    const { data, error } = await supabase
+        .from('students')
+        .select('*')
+        .eq('full_name', name);
 
-  askQuestion(question) {
-    console.log(`${this.name} asked: ${question}`);
-  }
+    if (error) {
+        console.error('Error querying database:', error.message);
+    } else if (data.length > 0) {
+        console.log(`Student "${name}" exists in the database:`, data);
+    } else {
+        console.log(`Student "${name}" was not found in the database.`);
+    }
 }
 
-module.exports = Student;
-
+// 4️⃣ Test the function
+(async () => {
+    await checkStudent('Sipho Dlamini');
+    await checkStudent('Nonexistent Name');
+})();
