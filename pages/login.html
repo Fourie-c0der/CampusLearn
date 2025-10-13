@@ -169,6 +169,62 @@
         <div>© 2025 CampusLearn™ – Peer-Powered Learning for Belgium Campus</div>
         <div class="mt-2">Prototype demo. Not connected to real services.</div>
       </div>
-    </footer> 
+
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/supabase.min.js"></script>
+    <script>
+      import dotenv from 'dotenv';
+      import supabase from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/supabase.min.js';
+      dotenv.config();
+
+      document.addEventListener('DOMContentLoaded', () => {
+        const supabaseUrl = `postgresql://${process.env.user}:${process.env.password}@${process.env.host}:${process.env.port}/${process.env.dbname}`;
+        const supabaseAnonKey = process.env['API-KEY'];
+        const supabase = supabase.createClient(supabaseUrl, supabaseAnonKey);
+
+        console.log('Supabase initialized, trying to log in...');
+        const form = document.getElementById('loginForm');
+        if (!form) {
+          console.error('Login form not found!');
+          alert('Something went wrong, please check the console.');
+          return;
+        }
+
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+
+          const email = document.getElementById('email').value;
+          const password = document.getElementById('password').value;
+
+          if (!email.endsWith('@belgiumcampus.ac.za')) {
+            alert('Please use a valid Belgium Campus email address.');
+            return;
+          }
+
+          console.log('Attempting login with:', { email, password });
+          try {
+            const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+            if (error) {
+              console.error('Login error:', error);
+              alert('Login failed: ' + error.message);
+            } else if (data?.user) {
+              console.log('User logged in:', data.user);
+              alert('Login successful! Redirecting...');
+              window.location.href = 'student-dashboard.html';
+            } else {
+              console.warn('No user data returned');
+              alert('Unexpected error, please try again.');
+            }
+          } catch (err) {
+            console.error('Unexpected error during login:', err);
+            alert('An unexpected error occurred. Check the console for details.');
+          }
+        });
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+
   </body>
 </html>
