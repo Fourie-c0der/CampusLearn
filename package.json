@@ -1,8 +1,10 @@
 {
   "name": "campuslearn",
   "version": "1.0.0",
+  "type": "module",
   "main": "ChatbotAssistant.js",
   "scripts": {
+    "cypress:open": "cypress open",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -11,5 +13,8 @@
   "description": "",
   "dependencies": {
     "@supabase/supabase-js": "^2.75.0"
+  },
+  "devDependencies": {
+    "cypress": "^15.4.0"
   }
 }
