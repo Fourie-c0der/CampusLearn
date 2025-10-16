@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusLearn™ Assistant</title>
+    <link rel="stylesheet" href="index.css">
+    <script type="importmap">
+      {
+        "imports": {
+          "@google/genai": "https://esm.sh/@google/genai@^0.7.0",
+          "marked": "https://esm.sh/marked@^15.0.7"
+        }
+      }
+    </script>
+    <script type="module" src="index.tsx" defer></script>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body>
+    <div class="chat-app">
+        <header class="app-header">
+            <h1>CampusLearn™</h1>
+            <p>Your AI Assistant, Dalmatian</p>
+        </header>
+        <main id="chat-container" class="chat-container" aria-live="polite" role="log"></main>
+        <footer class="chat-footer">
+            <form id="chat-form" class="chat-form" role="form">
+                <input type="text" id="chat-input" placeholder="Ask Dalmatian a question..." autocomplete="off" required aria-label="Chat input field">
+                <button type="submit" aria-label="Send message">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
+                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path>
+                    </svg>
+                </button>
+            </form>
+        </footer>
+    </div>
+<script type="module" src="/index.tsx"></script>
+</body>
+</html>
