@@ -11,136 +11,124 @@
   </head>
   <body>
     <script type="module">
-      import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
-      const SUPABASE_URL = 'https://peexuuzunrhbimpemdwz.supabase.co';
-      const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBlZXh1dXp1bnJoYmltcGVtZHd6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAxMzk3MjYsImV4cCI6MjA3NTcxNTcyNn0.sOOZfxsQvBF35vijxgO3K5nedKww0fyWKBXiebyfAB0';
-      const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const SUPABASE_URL = 'https://peexuuzunrhbimpemdwz.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBlZXh1dXp1bnJoYmltcGVtZHd6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAxMzk3MjYsImV4cCI6MjA3NTcxNTcyNn0.sOOZfxsQvBF35vijxgO3K5nedKww0fyWKBXiebyfAB0';
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-      document.addEventListener("DOMContentLoaded", async () => {
-        const storedUser = localStorage.getItem("loggedInUser");
-        if (!storedUser) {
-          alert("Please log in first!");
-          window.location.href = "login.html";
-          return;
-        }
-        const { email } = JSON.parse(storedUser);
+document.addEventListener("DOMContentLoaded", async () => {
+  const storedUser = localStorage.getItem("loggedInUser");
+  if (!storedUser) {
+    alert("Please log in first!");
+    window.location.href = "login.html";
+    return;
+  }
+  const { email } = JSON.parse(storedUser);
 
-        // Load student info
-        const { data: student, error } = await supabase
-          .from("students")
-          .select("*")
-          .eq("email", email)
-          .single();
-        if (error) return console.error(error);
+  // Load student info
+  const { data: student, error } = await supabase
+    .from("students")
+    .select("*")
+    .eq("email", email)
+    .single();
+  if (error) return console.error(error);
 
-        // Set placeholders and current values
-        const fullNameInput = document.getElementById("fullName");
-        const programmeInput = document.getElementById("programme");
-        const emailInput = document.getElementById("email");
-        const profilePicPreview = document.getElementById("profilePicPreview");
+  const mark = Number(student.mark); // Convert mark to number
 
-        fullNameInput.value = student.full_name || "";
-        fullNameInput.placeholder = student.full_name || "Enter your full name";
-        programmeInput.value = student.programme || "";
-        emailInput.value = student.email || "";
-        if (student.profile_photo) profilePicPreview.src = student.profile_photo;
+  // Populate personal info fields
+  document.getElementById("fullName").value = student.full_name || "";
+  document.getElementById("email").value = student.email || "";
+  document.getElementById("programme").value = student.programme || "";
+  if (student.profile_photo) document.getElementById("profilePicPreview").src = student.profile_photo;
 
-        // Auto-promote to tutor if mark > 75
-        if (student.mark > 75 && !student.is_tutor) {
-          await supabase.from("students").update({ is_tutor: true }).eq("id", student.id);
-          alert("🎉 Congratulations! You are now a tutor!");
-        }
+  // Auto-promote if mark > 75 and not already a tutor
+  if (mark > 75 && !student.is_tutor) {
+    await supabase.from("students").update({ is_tutor: true }).eq("id", student.id);
+    alert("🎉 Congratulations! You are now a tutor!");
+  }
 
-        // Conditionally render tutor application section
-        const tutorApplicationSection = document.getElementById("clTutorApplication");
-        if (student.mark < 75) {
-          tutorApplicationSection.innerHTML = `
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Apply to Become a Tutor</h5>
-                <div class="alert alert-warning d-flex align-items-center" role="alert">
-                  <i class="fa-solid fa-exclamation-circle me-2"></i>
-                  <div>You are not eligible to apply as a tutor. A minimum mark of 75 is required.</div>
-                </div>
-              </div>
-            </div>
-          `;
-        } else {
-          // Render the tutor application form
-          document.getElementById("tutorApplicationForm").addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const module = document.getElementById("tutorModule").value;
-            const qualifications = document.getElementById("tutorQualifications").value;
-            const motivation = document.getElementById("tutorMotivation").value;
+  // Tutor application eligibility
+  const eligibilityAlert = document.getElementById("tutorEligibilityAlert");
+  if (mark < 75) {
+    eligibilityAlert.classList.remove("d-none");
+  } else {
+    eligibilityAlert.classList.add("d-none");
+  }
 
-            const { error } = await supabase.from("tutors").insert({
-              user_id: student.id,
-              first_name: student.full_name.split(" ")[0],
-              last_name: student.full_name.split(" ").slice(1).join(" ") || "",
-              email: student.email,
-              modules: [module],
-              qualifications,
-              bio: motivation,
-              status: "pending"
-            });
+  // Tutor application submission
+  document.getElementById("tutorApplicationForm").addEventListener("submit", async e => {
+    e.preventDefault();
+    if (mark < 75) return; // prevent submission for ineligible users
 
-            if (error) alert("❌ Failed to submit tutor application");
-            else alert("✅ Tutor application submitted!");
-          });
-        }
+    const module = document.getElementById("tutorModule").value;
+    const qualifications = document.getElementById("tutorQualifications").value;
+    const motivation = document.getElementById("tutorMotivation").value;
 
-        // Save personal info
-        document.getElementById("personalInfoForm").addEventListener("submit", async (e) => {
-          e.preventDefault();
-          const updatedFullName = fullNameInput.value.trim();
-          const updatedProgramme = programmeInput.value.trim();
+    const { error } = await supabase.from("tutors").insert({
+      user_id: student.id,
+      first_name: student.full_name.split(" ")[0],
+      last_name: student.full_name.split(" ").slice(1).join(" ") || "",
+      email: student.email,
+      modules: [module],
+      qualifications,
+      bio: motivation,
+      status: "pending"
+    });
 
-          const { error } = await supabase
-            .from("students")
-            .update({ full_name: updatedFullName, programme: updatedProgramme })
-            .eq("id", student.id);
+    alert(error ? "Failed to submit application" : "Tutor application submitted!");
+  });
 
-          if (error) alert("❌ Failed to save info");
-          else alert("✅ Changes saved!");
-        });
+  // Personal info save
+  document.getElementById("personalInfoForm").addEventListener("submit", async e => {
+    e.preventDefault();
+    const updatedFullName = document.getElementById("fullName").value.trim();
+    const updatedProgramme = document.getElementById("programme").value.trim();
 
-        // Load achievements
-        const { data: achievements } = await supabase
-          .from("achievements")
-          .select("*")
-          .eq("student_id", student.id);
+    const { error } = await supabase
+      .from("students")
+      .update({ full_name: updatedFullName, programme: updatedProgramme })
+      .eq("id", student.id);
 
-        const container = document.querySelector("#clAchievements .d-flex");
-        container.innerHTML = "";
-        achievements?.forEach(a => {
-          const div = document.createElement("div");
-          div.className = "text-center";
-          div.innerHTML = `<i class="${a.icon} fa-2x"></i><p class="small mt-2">${a.title}</p>`;
-          container.appendChild(div);
-        });
+    alert(error ? "Failed to save info" : "✅ Changes saved!");
+  });
 
-        // Profile photo upload
-        document.getElementById("profilePicInput").addEventListener("change", async (e) => {
-          const file = e.target.files[0];
-          if (!file) return;
+  // Load achievements
+  const { data: achievements } = await supabase
+    .from("achievements")
+    .select("*")
+    .eq("student_id", student.id);
+  const container = document.querySelector("#clAchievements .d-flex");
+  container.innerHTML = "";
+  achievements?.forEach(a => {
+    const div = document.createElement("div");
+    div.className = "text-center";
+    div.innerHTML = `<i class="${a.icon} fa-2x"></i><p class="small mt-2">${a.title}</p>`;
+    container.appendChild(div);
+  });
 
-          const fileExt = file.name.split('.').pop();
-          const fileName = `${student.id}.${fileExt}`;
+  // Profile photo upload
+  document.getElementById("profilePicInput").addEventListener("change", async e => {
+    const file = e.target.files[0];
+    if (!file) return;
 
-          const { data, error } = await supabase.storage
-            .from("profile-photos")
-            .upload(fileName, file, { upsert: true });
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${student.id}.${fileExt}`;
 
-          if (error) return alert("❌ Upload failed!");
+    const { error } = await supabase.storage
+      .from("profile-photos")
+      .upload(fileName, file, { upsert: true });
 
-          const { publicUrl } = supabase.storage.from("profile-photos").getPublicUrl(fileName);
-          await supabase.from("students").update({ profile_photo: publicUrl }).eq("id", student.id);
-          profilePicPreview.src = publicUrl;
-          alert("✅ Profile photo updated!");
-        });
-      });
-    </script>
+    if (error) return alert("Upload failed!");
+
+    const { publicUrl } = supabase.storage.from("profile-photos").getPublicUrl(fileName);
+    await supabase.from("students").update({ profile_photo: publicUrl }).eq("id", student.id);
+    document.getElementById("profilePicPreview").src = publicUrl;
+    alert("✅ Profile photo updated!");
+  });
+});
+</script>
+
 
     <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom sticky-top">
       <div class="container">
@@ -288,6 +276,13 @@
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Apply to Become a Tutor</h5>
+
+            <!-- Eligibility warning (shown only when mark < 75) -->
+            <div id="tutorEligibilityAlert" class="alert alert-warning d-none" role="alert">
+              <i class="fa-solid fa-exclamation-circle me-2"></i>
+              You are not eligible to apply as a tutor. A minimum mark of 75 is required.
+            </div>
+
             <form id="tutorApplicationForm" class="row g-3">
               <div class="col-md-6">
                 <label class="form-label">Module</label>
@@ -397,9 +392,7 @@
         const preview = document.getElementById('profilePicPreview');
         if (input.files && input.files[0]) {
           const reader = new FileReader();
-          reader.onload = function (e) {
-            preview.src = e.target.result;
-          };
+          reader.onload = e => preview.src = e.target.result;
           reader.readAsDataURL(input.files[0]);
         }
       }
