@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Profile Settings • CampusLearn™</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+    <link href="assets/css/styles.css" rel="stylesheet">
+    <link rel="icon" href="/assets/images/Favicon.png" type="image/x-icon">
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom sticky-top">
+      <div class="container">
+        <a class="navbar-brand fw-bold" href="index.html">CampusLearn<span class="text-primary">™</span></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#clNav" aria-controls="clNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="clNav">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item"><a class="nav-link" href="topics.html">Topics</a></li>
+            <li class="nav-item"><a class="nav-link" href="forum.html">Forum</a></li>
+            <li class="nav-item"><a class="nav-link" href="resources.html">Resources</a></li>
+            <li class="nav-item"><a class="nav-link" href="faq.html">FAQ</a></li>
+            <li class="nav-item"><a class="nav-link" href="notifications.html">Notifications</a></li>
+            <li class="nav-item"><a class="nav-link" href="messages.html">Messages</a></li>
+          </ul>
+          <div class="d-flex gap-2">
+            <a href="login.html" class="btn btn-outline-primary btn-sm">Log out</a>
+            <a href="profile.html" class="btn btn-primary btn-sm active">My Profile</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container my-4">
+      <h1 class="h4 mb-4">Profile & Account Settings</h1>
+
+      <section id="clProfilePicture" class="mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Profile Picture</h5>
+            <div class="d-flex align-items-center gap-3">
+              <img id="profilePicPreview" src="https://images.unsplash.com/photo-1522075469751-6603f39547f5" alt="Profile Picture" class="rounded-circle" style="width: 100px; height: 100px; object-fit: cover;">
+              <div>
+                <input type="file" class="form-control mb-2" accept="image/*" id="profilePicInput" onchange="updateProfilePic()">
+                <button class="btn btn-outline-primary btn-sm">Upload New Picture</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="clPersonalInfo" class="mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Personal Information</h5>
+            <form class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">First Name</label>
+                <input class="form-control" value="Fourie">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Last Name</label>
+                <input class="form-control" value="van der Walt">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Email</label>
+                <input class="form-control" value="name@belgiumcampus.ac.za" disabled>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Programme</label>
+                <select class="form-select">
+                  <option selected>BIT</option>
+                  <option>BCom</option>
+                  <option>Diploma</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <label class="form-label">Topics I Need Help With</label>
+                <input class="form-control" placeholder="Add topics (e.g., SE202, DB101)">
+              </div>
+              <div class="col-12">
+                <button class="btn btn-primary">Save Changes</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <section id="clAchievements" class="mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Achievements & Badges</h5>
+            <div class="d-flex flex-wrap gap-3">
+              <div class="text-center">
+                <i class="fa-solid fa-trophy fa-2x text-warning"></i>
+                <p class="small mt-2">Completed SE202 Module</p>
+              </div>
+              <div class="text-center">
+                <i class="fa-solid fa-star fa-2x text-primary"></i>
+                <p class="small mt-2">Top Contributor: DB101</p>
+              </div>
+              <div class="text-center">
+                <i class="fa-solid fa-medal fa-2x text-success"></i>
+                <p class="small mt-2">5 Forum Answers</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="clNotificationPreferences" class="mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Notification Preferences</h5>
+            <form>
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" id="emailNotifications" checked>
+                <label class="form-check-label" for="emailNotifications">Email notifications for new replies</label>
+              </div>
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" id="inAppNotifications">
+                <label class="form-check-label" for="inAppNotifications">In-app notifications for tutor responses</label>
+              </div>
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" id="sessionReminders" checked>
+                <label class="form-check-label" for="sessionReminders">Session reminder emails</label>
+              </div>
+              <button class="btn btn-primary btn-sm">Save Notification Settings</button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <section id="clAccountSecurity" class="mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Account Security</h5>
+            <form class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">New Password</label>
+                <input type="password" class="form-control" placeholder="Enter new password">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Confirm Password</label>
+                <input type="password" class="form-control" placeholder="Confirm new password">
+              </div>
+              <div class="col-12">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="twoFactorAuth">
+                  <label class="form-check-label" for="twoFactorAuth">Enable Two-Factor Authentication</label>
+                </div>
+              </div>
+              <div class="col-12">
+                <button class="btn btn-primary">Update Security Settings</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <section id="clTutorApplication" class="mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Apply to Become a Tutor</h5>
+            <form class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">Module</label>
+                <select class="form-select">
+                  <option>SE202</option>
+                  <option>DB101</option>
+                  <option>ITM300</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Qualifications</label>
+                <input class="form-control" placeholder="e.g., Completed SE202 with 85%">
+              </div>
+              <div class="col-12">
+                <label class="form-label">Why do you want to tutor?</label>
+                <textarea class="form-control" rows="3" placeholder="Share your motivation…"></textarea>
+              </div>
+              <div class="col-12">
+                <button class="btn btn-primary">Submit Application</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <section id="clSavedResources" class="mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Saved Resources</h5>
+            <div class="list-group">
+              <a class="list-group-item" href="resource.html?id=1"><strong>SQL Guide</strong><div class="small text-muted">DB101 • Saved on Oct 15, 2025</div></a>
+              <a class="list-group-item" href="resource.html?id=2"><strong>UML Diagram Tutorial</strong><div class="small text-muted">SE202 • Saved on Oct 10, 2025</div></a>
+            </div>
+            <button class="btn btn-outline-secondary w-100 mt-3">View All Saved Resources</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="clCommunityContributions" class="mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Community Contributions</h5>
+            <ul class="list-unstyled small">
+              <li><i class="fa-solid fa-comment me-2"></i>Answered question in DB101 forum • Today 09:30 AM</li>
+              <li><i class="fa-solid fa-file-alt me-2"></i>Uploaded resource to SE202 • Yesterday</li>
+              <li><i class="fa-solid fa-thumbs-up me-2"></i>Received 10 upvotes on forum post • 2 days ago</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="clPreferencesCustomization" class="mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Preferences Customization</h5>
+            <form class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">Theme</label>
+                <select class="form-select">
+                  <option selected>Light</option>
+                  <option>Dark</option>
+                  <option>System</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Language</label>
+                <select class="form-select">
+                  <option selected>English</option>
+                  <option>Afrikaans</option>
+                  <option>Dutch</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <button class="btn btn-primary">Save Preferences</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <section id="clActivitySummary" class="mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Activity Summary</h5>
+            <ul class="list-unstyled small">
+              <li><i class="fa-solid fa-user me-2"></i>Updated profile picture • Today 09:30 AM</li>
+              <li><i class="fa-solid fa-check me-2"></i>Submitted tutor application for DB101 • Yesterday</li>
+              <li><i class="fa-solid fa-bell me-2"></i>Enabled email notifications • 2 days ago</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="mt-5 py-4 border-top">
+      <div class="container text-center text-muted small">
+        <div>© 2025 CampusLearn™ – Peer-Powered Learning for Belgium Campus</div>
+        <div class="mt-2">Prototype demo. Not connected to real services.</div>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/app.js"></script>
+    <script>
+      function updateProfilePic() {
+        const input = document.getElementById('profilePicInput');
+        const preview = document.getElementById('profilePicPreview');
+        if (input.files && input.files[0]) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            preview.src = e.target.result;
+          };
+          reader.readAsDataURL(input.files[0]);
+        }
+      }
+    </script>
+  </body>
+</html>

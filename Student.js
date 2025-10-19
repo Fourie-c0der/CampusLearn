@@ -68,6 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
           // Redirect after login
           window.location.href = "student-dashboard.html";
+          localStorage.setItem("loggedInUserEmail", emailInput);
         }
       } catch (err) {
         console.error("Unexpected error:", err);
