@@ -1,6 +1,6 @@
-<!-- partials/nav.html -->
+<!-- pages/partials/nav.html -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top shadow-sm">
-  <div class="container-fluid">
+  <div class="container">
     <a class="navbar-brand fw-bold" href="topics.html">CampusLearn™</a>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#clNav"
@@ -11,14 +11,15 @@
     <div class="collapse navbar-collapse" id="clNav">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item"><a class="nav-link" href="topics.html" data-nav="topics">Topics</a></li>
-        <li class="nav-item"><a class="nav-link" href="resources.html" data-nav="resources">Resources</a></li>
+        <li class="nav-item"><a class="nav-link active" href="resources.html" data-nav="resources">Resources</a></li>
         <li class="nav-item d-none" id="navTutor"><a class="nav-link" href="tutor-dashboard.html" data-nav="tutor">Tutor Dashboard</a></li>
         <li class="nav-item"><a class="nav-link" href="profile.html" data-nav="profile">Profile</a></li>
       </ul>
 
-      <div class="d-flex align-items-center gap-3">
-        <span class="navbar-text small text-light" id="navUser">Signed in</span>
-        <button class="btn btn-outline-light btn-sm" id="btnLogout" type="button">Log out</button>
+      <div class="d-flex align-items-center gap-2">
+        <span class="navbar-text small text-light" id="navUser">Guest</span>
+        <a id="btnLogin" class="btn btn-outline-light btn-sm" href="login.html">Log in</a>
+        <button id="btnLogout" class="btn btn-light btn-sm d-none" type="button">Log out</button>
       </div>
     </div>
   </div>
@@ -26,38 +27,37 @@
 
 <script>
   (async () => {
-    // Requires global `supabase` (already created in resources.html before this partial loads)
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
+    // Highlight current page
+    const path = (location.pathname.split('/').pop() || '').toLowerCase();
+    document.querySelectorAll('[data-nav]').forEach(a => {
+      const key = a.getAttribute('data-nav');
+      const match = (key==='topics' && path==='topics.html')
+                 || (key==='resources' && path==='resources.html')
+                 || (key==='tutor' && path==='tutor-dashboard.html')
+                 || (key==='profile' && path==='profile.html');
+      if (match) a.classList.add('active');
+    });
 
-      // Show email (or name if you add it later)
-      const email = user?.email || 'Signed in';
-      document.getElementById('navUser').textContent = email;
+    // If Supabase exists, show user info + logout + tutor link based on role
+    if (window.supabase) {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          document.getElementById('navUser').textContent = user.email || 'Signed in';
+          document.getElementById('btnLogin').classList.add('d-none');
+          document.getElementById('btnLogout').classList.remove('d-none');
 
-      // Role-aware: show Tutor Dashboard for tutor/admin
-      const role = user?.user_metadata?.role || 'student';
-      if (role === 'tutor' || role === 'admin') {
-        document.getElementById('navTutor')?.classList.remove('d-none');
-      }
-
-      // Active link highlight
-      const path = (location.pathname.split('/').pop() || '').toLowerCase();
-      document.querySelectorAll('[data-nav]').forEach(a => {
-        const key = a.getAttribute('data-nav');
-        const match = (key === 'topics' && path === 'topics.html')
-                   || (key === 'resources' && path === 'resources.html')
-                   || (key === 'tutor' && path === 'tutor-dashboard.html')
-                   || (key === 'profile' && path === 'profile.html');
-        if (match) a.classList.add('active');
-      });
-
-      // Logout
-      document.getElementById('btnLogout')?.addEventListener('click', async () => {
-        await supabase.auth.signOut();
-        location.href = 'login.html';
-      });
-    } catch (_) {
-      // If anything fails, keep nav minimal
+          const role = user.user_metadata?.role || 'student';
+          if (role === 'tutor' || role === 'admin') {
+            document.getElementById('navTutor')?.classList.remove('d-none');
+          }
+        }
+        document.getElementById('btnLogout')?.addEventListener('click', async () => {
+          await supabase.auth.signOut();
+          const base = location.href.replace(/[^/]+$/, "");
+          location.href = base + "login.html";
+        });
+      } catch (_) { /* ignore */ }
     }
   })();
 </script>
