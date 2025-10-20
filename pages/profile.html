@@ -1,423 +1,96 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Profile Settings • CampusLearn™</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
-    <link href="assets/css/styles.css" rel="stylesheet">
-    <link rel="icon" href="/assets/images/Favicon.png" type="image/x-icon">
-  </head>
-  <body>
-    <script src = "../nav.js"></script>
-    <script type="module">
-      import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
-
-      const SUPABASE_URL = 'https://peexuuzunrhbimpemdwz.supabase.co';
-      const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBlZXh1dXp1bnJoYmltcGVtZHd6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAxMzk3MjYsImV4cCI6MjA3NTcxNTcyNn0.sOOZfxsQvBF35vijxgO3K5nedKww0fyWKBXiebyfAB0';
-      const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-      document.addEventListener("DOMContentLoaded", async () => {
-        const storedUser = localStorage.getItem("loggedInUser");
-        if (!storedUser) {
-          alert("Please log in first!");
-          window.location.href = "login.html";
-          return;
-        }
-        const { email } = JSON.parse(storedUser);
-
-        // Load student info
-        const { data: student, error } = await supabase
-          .from("students")
-          .select("*")
-          .eq("email", email)
-          .single();
-        if (error) return console.error(error);
-
-        // Populate personal info fields
-        document.getElementById("fullName").value = student.full_name || "";
-        document.getElementById("email").value = student.email || "";
-        document.getElementById("programme").value = student.programme || "";
-        if (student.profile_photo) document.getElementById("profilePicPreview").src = student.profile_photo;
-
-        // Auto-promote if mark > 75 and not already a tutor
-        if (student.mark > 75 && !student.is_tutor) {
-          await supabase.from("students").update({ is_tutor: true }).eq("id", student.id);
-          alert("Congratulations! You are now a tutor!");
-        }
-
-        // Tutor application eligibility
-        const eligibilityAlert = document.getElementById("tutorEligibilityAlert");
-        if (student.mark < 75) {
-          // Show warning but do NOT disable the form
-          eligibilityAlert.classList.remove("d-none");
-        } else {
-          eligibilityAlert.classList.add("d-none");
-        }
-
-        // Tutor application submission
-        document.getElementById("tutorApplicationForm").addEventListener("submit", async e => {
-          e.preventDefault();
-
-          // Silently prevent submission for ineligible users
-          if (student.mark < 75) {
-            return; // No alert, rely on visible warning
-          }
-
-          const module = document.getElementById("tutorModule").value;
-          const qualifications = document.getElementById("tutorQualifications").value;
-          const motivation = document.getElementById("tutorMotivation").value;
-
-          const { error } = await supabase.from("tutors").insert({
-            user_id: student.id,
-            first_name: student.full_name.split(" ")[0],
-            last_name: student.full_name.split(" ").slice(1).join(" ") || "",
-            email: student.email,
-            modules: [module],
-            qualifications,
-            bio: motivation,
-            status: "pending"
-          });
-
-          alert(error ? "Failed to submit application" : "Tutor application submitted!");
-        });
-
-        // Personal info save
-        document.getElementById("personalInfoForm").addEventListener("submit", async e => {
-          e.preventDefault();
-          const updatedFullName = document.getElementById("fullName").value.trim();
-          const updatedProgramme = document.getElementById("programme").value.trim();
-
-          const { error } = await supabase
-            .from("students")
-            .update({ full_name: updatedFullName, programme: updatedProgramme })
-            .eq("id", student.id);
-
-          alert(error ? "Failed to save info" : "Changes saved!");
-        });
-
-        // Load achievements
-        const { data: achievements } = await supabase
-          .from("achievements")
-          .select("*")
-          .eq("student_id", student.id);
-        const container = document.querySelector("#clAchievements .d-flex");
-        container.innerHTML = "";
-        achievements?.forEach(a => {
-          const div = document.createElement("div");
-          div.className = "text-center";
-          div.innerHTML = `<i class="${a.icon} fa-2x"></i><p class="small mt-2">${a.title}</p>`;
-          container.appendChild(div);
-        });
-
-        // Profile photo upload
-        document.getElementById("profilePicInput").addEventListener("change", async e => {
-          const file = e.target.files[0];
-          if (!file) return;
-
-          const fileExt = file.name.split('.').pop();
-          const fileName = `${student.id}.${fileExt}`;
-
-          const { error } = await supabase.storage
-            .from("profile-photos")
-            .upload(fileName, file, { upsert: true });
-
-          if (error) return alert("Upload failed!");
-
-          const { publicUrl } = supabase.storage.from("profile-photos").getPublicUrl(fileName);
-          await supabase.from("students").update({ profile_photo: publicUrl }).eq("id", student.id);
-          document.getElementById("profilePicPreview").src = publicUrl;
-          alert("Profile photo updated!");
-        });
-
-        // Logout button
-        document.getElementById("logoutButton").addEventListener("click", async () => {
-          await supabase.auth.signOut();
-          localStorage.removeItem("loggedInUser");
-          window.location.href = "login.html";
-        });
-      });
-    </script>
-
-    <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom sticky-top">
-      <div class="container">
-        <a class="navbar-brand fw-bold" href="index.html">CampusLearn<span class="text-primary">™</span></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#clNav" aria-controls="clNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="clNav">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item"><a class="nav-link" href="topics.html">Topics</a></li>
-            <li class="nav-item"><a class="nav-link" href="forum.html">Forum</a></li>
-            <li class="nav-item"><a class="nav-link" href="resources.html">Resources</a></li>
-            <li class="nav-item"><a class="nav-link" href="faq.html">FAQ</a></li>
-            <li class="nav-item"><a class="nav-link" href="notifications.html">Notifications</a></li>
-            <li class="nav-item"><a class="nav-link" href="messages.html">Messages</a></li>
-          </ul>
-          <div class="d-flex gap-2">
-            <a href="login.html" class="btn btn-outline-primary btn-sm">Log out</a>
-            <a href="profile.html" class="btn btn-primary btn-sm active">My Profile</a>
-          </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tutor Profile | CampusLearn</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/style.css" /> <!-- your site theme -->
+</head>
+<body>
+  
+  <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom sticky-top shadow-sm">
+    <div class="container">
+      <a class="navbar-brand fw-bold text-primary" href="tutor-dashboard.html">CampusLearn</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#ClNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="ClNav">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" href="topics.html">Topics</a></li>
+          <li class="nav-item"><a class="nav-link" href="forum.html">Forum</a></li>
+          <li class="nav-item"><a class="nav-link" href="resources.html">Resources</a></li>
+          <li class="nav-item"><a class="nav-link" href="faq.html">FAQ</a></li>
+          <li class="nav-item"><a class="nav-link" href="messages.html">Messages</a></li>
+        </ul>
+        <div class="d-flex gap-2">
+          <a href="login.html" class="btn btn-outline-primary btn-sm">Login</a>
+          <a href="register.html" class="btn btn-primary btn-sm">Register</a>
         </div>
       </div>
-    </nav>
+    </div>
+  </nav>
 
-    <main class="container my-4">
-      <h1 class="h4 mb-4">Profile & Account Settings</h1>
-
-      <section id="clProfilePicture" class="mb-4">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Profile Picture</h5>
-            <div class="d-flex align-items-center gap-3">
-              <img id="profilePicPreview" src="https://images.unsplash.com/photo-1522075469751-6603f39547f5" alt="Profile Picture" class="rounded-circle" style="width: 100px; height: 100px; object-fit: cover;">
-              <div>
-                <input type="file" class="form-control mb-2" accept="image/*" id="profilePicInput">
-                <button class="btn btn-outline-primary btn-sm">Upload New Picture</button>
+ 
+  <main class="container my-5">
+    <h1 class="mb-4 text-center text-primary fw-bold">Tutor Profile</h1>
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card border-0 shadow-lg rounded-4">
+          <div class="card-body p-4">
+            <div class="text-center mb-4">
+              <img id="profileImage" src="../assets/images/default-avatar.png" alt="Profile Picture"
+                   class="rounded-circle border shadow-sm" width="150" height="150" style="object-fit: cover;">
+              <div class="mt-3">
+                <label for="profilePicInput" class="btn btn-outline-primary btn-sm">Change Picture</label>
+                <input type="file" id="profilePicInput" accept="image/*" hidden>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
 
-      <section id="clPersonalInfo" class="mb-4">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Personal Information</h5>
-            <form id="personalInfoForm" class="row g-3">
-              <div class="col-md-6">
-                <label class="form-label">Full Name</label>
-                <input id="fullName" class="form-control" placeholder="Enter your full name">
-              </div>
-              <div class="col-md-6">
-                <label class="form-label">Email</label>
-                <input id="email" class="form-control" disabled>
-              </div>
-              <div class="col-md-6">
-                <label class="form-label">Programme</label>
-                <select id="programme" class="form-select">
-                  <option value="BIT">BIT</option>
-                  <option value="BCom">BCom</option>
-                  <option value="Diploma">Diploma</option>
-                </select>
-              </div>
-              <div class="col-12">
-                <button class="btn btn-primary">Save Changes</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </section>
-
-      <section id="clAchievements" class="mb-4">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Achievements & Badges</h5>
-            <div class="d-flex flex-wrap gap-3">
-              <div class="text-center">
-                <i class="fa-solid fa-trophy fa-2x text-warning"></i>
-                <p class="small mt-2">Completed SE202 Module</p>
-              </div>
-              <div class="text-center">
-                <i class="fa-solid fa-star fa-2x text-primary"></i>
-                <p class="small mt-2">Top Contributor: DB101</p>
-              </div>
-              <div class="text-center">
-                <i class="fa-solid fa-medal fa-2x text-success"></i>
-                <p class="small mt-2">5 Forum Answers</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="clNotificationPreferences" class="mb-4">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Notification Preferences</h5>
-            <form>
-              <div class="form-check mb-2">
-                <input class="form-check-input" type="checkbox" id="emailNotifications" checked>
-                <label class="form-check-label" for="emailNotifications">Email notifications for new replies</label>
-              </div>
-              <div class="form-check mb-2">
-                <input class="form-check-input" type="checkbox" id="inAppNotifications">
-                <label class="form-check-label" for="inAppNotifications">In-app notifications for tutor responses</label>
-              </div>
-              <div class="form-check mb-2">
-                <input class="form-check-input" type="checkbox" id="sessionReminders" checked>
-                <label class="form-check-label" for="sessionReminders">Session reminder emails</label>
-              </div>
-              <button class="btn btn-primary btn-sm">Save Notification Preferences</button>
-            </form>
-          </div>
-        </div>
-      </section>
-
-      <section id="clAccountSecurity" class="mb-4">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Account Security</h5>
-            <form class="row g-3">
-              <div class="col-md-6">
-                <label class="form-label">New Password</label>
-                <input type="password" class="form-control" placeholder="Enter new password">
-              </div>
-              <div class="col-md-6">
-                <label class="form-label">Confirm Password</label>
-                <input type="password" class="form-control" placeholder="Confirm new password">
-              </div>
-              <div class="col-12">
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="twoFactorAuth">
-                  <label class="form-check-label" for="twoFactorAuth">Enable Two-Factor Authentication</label>
+            <form id="profileForm">
+              <div class="row g-3">
+                <div class="col-md-4">
+                  <label for="firstName" class="form-label">First Name</label>
+                  <input type="text" id="firstName" class="form-control" placeholder="First name" required>
+                </div>
+                <div class="col-md-4">
+                  <label for="middleName" class="form-label">Middle Name (Optional)</label>
+                  <input type="text" id="middleName" class="form-control" placeholder="Middle name">
+                </div>
+                <div class="col-md-4">
+                  <label for="lastName" class="form-label">Last Name</label>
+                  <input type="text" id="lastName" class="form-control" placeholder="Last name" required>
                 </div>
               </div>
-              <div class="col-12">
-                <button class="btn btn-primary">Update Security Settings</button>
+
+              <div class="row g-3 mt-3">
+                <div class="col-md-6">
+                  <label for="gender" class="form-label">Gender</label>
+                  <select id="gender" class="form-select" required>
+                    <option value="">Select Gender</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label for="phone" class="form-label">Phone Number</label>
+                  <input type="tel" id="phone" class="form-control" placeholder="11-digit number"
+                         maxlength="11" pattern="\\d{11}" required>
+                </div>
+              </div>
+
+              <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary px-4">Save Changes</button>
               </div>
             </form>
           </div>
         </div>
-      </section>
-
-      <section id="clTutorApplication" class="mb-4">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Apply to Become a Tutor</h5>
-
-            <!-- Eligibility warning (shown only when mark < 75) -->
-            <div id="tutorEligibilityAlert" class="alert alert-warning d-none" role="alert">
-              <i class="fa-solid fa-exclamation-circle me-2"></i>
-              You are not eligible to apply as a tutor. A minimum mark of 75 is required.
-            </div>
-
-            <form id="tutorApplicationForm" class="row g-3">
-              <div class="col-md-6">
-                <label class="form-label">Module</label>
-                <select id="tutorModule" class="form-select">
-                  <option>SE202</option>
-                  <option>DB101</option>
-                  <option>ITM300</option>
-                </select>
-              </div>
-              <div class="col-md-6">
-                <label class="form-label">Qualifications</label>
-                <input id="tutorQualifications" class="form-control" placeholder="e.g., Completed SE202 with 85%">
-              </div>
-              <div class="col-12">
-                <label class="form-label">Why do you want to tutor?</label>
-                <textarea id="tutorMotivation" class="form-control" rows="3" placeholder="Share your motivation…"></textarea>
-              </div>
-              <div class="col-12">
-                <button class="btn btn-primary">Submit Application</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </section>
-
-      <section id="clSavedResources" class="mb-4">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Saved Resources</h5>
-            <div class="list-group">
-              <a class="list-group-item" href="resource.html?id=1"><strong>SQL Guide</strong><div class="small text-muted">DB101 • Saved on Oct 15, 2025</div></a>
-              <a class="list-group-item" href="resource.html?id=2"><strong>UML Diagram Tutorial</strong><div class="small text-muted">SE202 • Saved on Oct 10, 2025</div></a>
-            </div>
-            <button class="btn btn-outline-secondary w-100 mt-3">View All Saved Resources</button>
-          </div>
-        </div>
-      </section>
-
-      <section id="clCommunityContributions" class="mb-4">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Community Contributions</h5>
-            <ul class="list-unstyled small">
-              <li><i class="fa-solid fa-comment me-2"></i>Answered question in DB101 forum • Today 09:30 AM</li>
-              <li><i class="fa-solid fa-file-alt me-2"></i>Uploaded resource to SE202 • Yesterday</li>
-              <li><i class="fa-solid fa-thumbs-up me-2"></i>Received 10 upvotes on forum post • 2 days ago</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      <section id="clPreferencesCustomization" class="mb-4">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Preferences Customization</h5>
-            <form class="row g-3">
-              <div class="col-md-6">
-                <label class="form-label">Theme</label>
-                <select class="form-select">
-                  <option selected>Light</option>
-                  <option>Dark</option>
-                  <option>System</option>
-                </select>
-              </div>
-              <div class="col-md-6">
-                <label class="form-label">Language</label>
-                <select class="form-select">
-                  <option selected>English</option>
-                  <option>Afrikaans</option>
-                  <option>Dutch</option>
-                </select>
-              </div>
-              <div class="col-12">
-                <button class="btn btn-primary">Save Preferences</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </section>
-
-      <section id="clActivitySummary" class="mb-4">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Activity Summary</h5>
-            <ul class="list-unstyled small">
-              <li><i class="fa-solid fa-user me-2"></i>Updated profile picture • Today 09:30 AM</li>
-              <li><i class="fa-solid fa-check me-2"></i>Submitted tutor application for DB101 • Yesterday</li>
-              <li><i class="fa-solid fa-bell me-2"></i>Enabled email notifications • 2 days ago</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      <section id="clLogout" class="mb-4">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Log Out</h5>
-            <p class="small text-muted mb-3">Click below to end your session and log out of CampusLearn™.</p>
-            <button id="logoutButton" class="btn btn-danger">
-              <i class="fa-solid fa-sign-out-alt me-2"></i>Log Out
-            </button>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <footer class="mt-5 py-4 border-top">
-      <div class="container text-center text-muted small">
-        <div>© 2025 CampusLearn™ – Peer-Powered Learning for Belgium Campus</div>
-        <div class="mt-2">Prototype demo. Not connected to real services.</div>
       </div>
-    </footer>
+    </div>
+  </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/app.js"></script>
-    <script>
-      function updateProfilePic() {
-        const input = document.getElementById('profilePicInput');
-        const preview = document.getElementById('profilePicPreview');
-        if (input.files && input.files[0]) {
-          const reader = new FileReader();
-          reader.onload = e => preview.src = e.target.result;
-          reader.readAsDataURL(input.files[0]);
-        }
-      }
-    </script>
-  </body>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/profile.js"></script>
+</body>
 </html>
