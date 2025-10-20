@@ -68,11 +68,11 @@
             <option value="video">Video</option>
             <option value="link">External Link</option>
           </select>
-        </div>
         <div class="mb-2">
-          <label class="form-label">URL</label>
-          <input type="url" class="form-control" id="urlInput" required>
-        </div>
+            <label class="form-label">Upload file (PDF/Video) or leave blank for External Link</label>
+            <input type="file" class="form-control" id="fileInput" accept=".pdf,video/*">
+            <div class="form-text">If you choose “External Link”, we’ll ignore the file and use the URL.</div>
+          </div>
         <button type="submit" class="btn btn-primary w-100">Upload Resource</button>
       </form>
     </div>
