@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -30,8 +30,22 @@
             <a href="register.html" class="btn btn-primary btn-sm">Register</a>
           </div>
         </div>
-      </div>
-    </nav>
+        <div class="mb-2">
+          <label class="form-label">Type</label>
+          <select class="form-select" id="typeInput">
+            <option value="pdf">PDF</option>
+            <option value="video">Video</option>
+            <option value="link">External Link</option>
+          </select>
+        <div class="mb-2">
+            <label class="form-label">Upload file (PDF/Video) or leave blank for External Link</label>
+            <input type="file" class="form-control" id="fileInput" accept=".pdf,video/*">
+            <div class="form-text">If you choose “External Link”, we’ll ignore the file and use the URL.</div>
+          </div>
+        <button type="submit" class="btn btn-primary w-100">Upload Resource</button>
+      </form>
+    </div>
+  </main>
 
     <!-- Main content -->
     <main class="container my-4">
