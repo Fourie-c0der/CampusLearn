@@ -133,62 +133,52 @@ document.addEventListener("DOMContentLoaded", () => {
   const PRIMARY_MODEL = 'gemini-2.5-flash'; // Latest model as of Oct 2025
   const FALLBACK_MODEL = 'gemini-1.5-flash'; // Fallback if primary fails
 
-  async function sendMessage(model = PRIMARY_MODEL) {
-    const userMessage = inputField.value.trim();
-    if (!userMessage) return;
+ async function sendMessage(model = PRIMARY_MODEL) {
+  const userMessage = inputField.value.trim();
+  if (!userMessage) return;
 
-    // Display sanitized user message
-    responseArea.innerHTML += `<div><strong>You:</strong> ${sanitizeHTML(userMessage)}</div>`;
-    inputField.value = "";
-    responseArea.scrollTop = responseArea.scrollHeight;
+  responseArea.innerHTML += `<div><strong>You:</strong> ${sanitizeHTML(userMessage)}</div>`;
+  inputField.value = "";
+  responseArea.scrollTop = responseArea.scrollHeight;
 
-    try {
-      const res = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_API_KEY}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            contents: [
-              {
-                parts: [
-                  { text: userMessage }
-                ]
-              }
-            ]
-          }),
-        }
-      );
+  // Add context about Campus Learn
+  const campusLearnContext = `
+Campus Learn is an educational platform for students, providing learning resources, courses, and dashboards to track their academic progress. 
+Please answer user questions in the context of Campus Learn.
+`;
 
-      if (!res.ok) {
-        let errorMessage = `API request failed with status ${res.status}`;
-        if (res.status === 404) {
-          errorMessage = `Model '${model}' not found. This may be due to an outdated model name or API version.`;
-          // Try fallback model automatically
-          console.warn(`Primary model failed. Trying fallback: ${FALLBACK_MODEL}`);
-          return sendMessage(FALLBACK_MODEL);
-        } else if (res.status === 401) {
-          errorMessage = "Invalid API key. Please verify your API key in the code.";
-        } else if (res.status === 429) {
-          errorMessage = "Rate limit exceeded. Please try again later.";
-        } else if (res.status === 400) {
-          errorMessage = "Bad request. Check your input format or API key restrictions.";
-        }
-        throw new Error(errorMessage);
+  try {
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_API_KEY}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [
+            {
+              parts: [
+                { text: campusLearnContext + "\n\nUser: " + userMessage }
+              ]
+            }
+          ]
+        }),
       }
+    );
 
-      const data = await res.json();
-      console.log(`Gemini Response (${model}):`, data);
+    if (!res.ok) throw new Error(`API request failed with status ${res.status}`);
+    const data = await res.json();
+    console.log(`Gemini Response (${model}):`, data);
 
-      const aiResponse = data?.candidates?.[0]?.content?.parts?.[0]?.text || "⚠️ No response from Gemini.";
-      responseArea.innerHTML += `<div><strong>AI:</strong> ${sanitizeHTML(aiResponse)}</div>`;
-      responseArea.scrollTop = responseArea.scrollHeight;
-    } catch (err) {
-      console.error(`Gemini API Error (${model}):`, err);
-      responseArea.innerHTML += `<div style="color:red;"><strong>Error:</strong> ${sanitizeHTML(err.message)}</div>`;
-      responseArea.scrollTop = responseArea.scrollHeight;
-    }
+    const aiResponse = data?.candidates?.[0]?.content?.parts?.[0]?.text || "⚠️ No response from Gemini.";
+    responseArea.innerHTML += `<div><strong>AI:</strong> ${sanitizeHTML(aiResponse)}</div>`;
+    responseArea.scrollTop = responseArea.scrollHeight;
+  } catch (err) {
+    console.error(`Gemini API Error (${model}):`, err);
+    responseArea.innerHTML += `<div style="color:red;"><strong>Error:</strong> ${sanitizeHTML(err.message)}</div>`;
+    responseArea.scrollTop = responseArea.scrollHeight;
   }
+}
+
 
   sendButton.addEventListener("click", () => sendMessage());
   inputField.addEventListener("keydown", (e) => {
