@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Student Dashboard • CampusLearn™</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="../assets/css/styles.css" rel="stylesheet">
+    <link rel="icon" href="../assets/images/Favicon.png" type="image/x-icon">
+    <script src = "../assets/js/nav.js"></script>
+    <style>
+      .sidebar {
+        position: sticky;
+        top: 5rem;
+        height: fit-content;
+      }
+      .progress {
+        height: 1.5rem;
+        border-radius: 0.5rem;
+      }
+      .card {
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .btn-sm {
+        font-size: 0.875rem;
+        padding: 0.25rem 0.5rem;
+      }
+      body {
+        background-image: url('https://www.transparenttextures.com/patterns/cubes.png'), url('https://img.freepik.com/premium-vector/hand-drawn-set-elements-abstract-arrows-ribbons-hearts-stars-crowns-monsters-other-elements-hand-drawn-style-concept-design-scribble-illustration-vector-illustration_607987-917.jpg');
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        background-blend-mode: overlay;
+        background-size: auto, cover;
+        background-repeat: repeat, no-repeat;
+        background-color: #f5f7fa;
+      }
+      .avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 1rem;
+      }
+      h1.h4 {
+        font-weight: 600;
+      }
+      .list-group-item {
+        border: none;
+        border-bottom: 1px solid #e9ecef;
+      }
+      .progress-bar {
+        font-size: 0.9rem;
+        font-weight: 500;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom sticky-top shadow-sm">
+      <div class="container">
+        <a class="navbar-brand fw-bold" href="../index.html">CampusLearn<span class="text-primary">™</span></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#clNav" aria-controls="clNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="clNav">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item"><a class="nav-link" href="topics.html">Topics</a></li>
+            <li class="nav-item"><a class="nav-link" href="forum.html">Forum</a></li>
+            <li class="nav-item"><a class="nav-link" href="resources.html">Resources</a></li>
+            <li class="nav-item"><a class="nav-link" href="faq.html">FAQ</a></li>
+            <li class="nav-item"><a class="nav-link" href="messages.html">Messages</a></li>
+          </ul>
+          <div class="d-flex gap-2">
+            <a href="login.html" class="btn btn-outline-primary btn-sm">Log in</a>
+            <a href="register.html" class="btn btn-primary btn-sm">Register</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container my-5">
+      <div class="row">
+        <div class="col-lg-9">
+          <h1 class="h4 mb-4">Welcome to Your Dashboard</h1>
+
+          <section id="clProfileSummary" class="mb-4">
+            <div class="card">
+              <div class="card-body text-center">
+                <img src="https://via.placeholder.com/80" class="avatar" alt="Profile Avatar">
+                <!-- Profile summary will be inserted here by dashboard.js -->
+              </div>
+            </div>
+          </section>
+
+          <section class="row g-4 mb-5" id="clQuickAccess">
+            <div class="col-md-4">
+              <div class="card h-100">
+                <div class="card-body">
+                  <h5 class="card-title"><i class="bi bi-book me-2"></i>My Topics</h5>
+                  <p class="card-text">Create or subscribe to help topics for your studies.</p>
+                  <a href="topics.html" class="btn btn-primary btn-sm">Manage Topics</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card h-100">
+                <div class="card-body">
+                  <h5 class="card-title"><i class="bi bi-envelope me-2"></i>My Messages</h5>
+                  <p class="card-text">Chat with tutors and peers in private conversations.</p>
+                  <a href="messages.html" class="btn btn-outline-primary btn-sm">Go to Messages</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card h-100">
+                <div class="card-body">
+                  <h5 class="card-title"><i class="bi bi-files me-2"></i>Resources</h5>
+                  <p class="card-text">Access study materials and interactive exercises.</p>
+                  <a href="resources.html" class="btn btn-outline-secondary btn-sm">Browse Resources</a>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="mb-5" id="clTutorResponses">
+            <h2 class="h5 mb-3">Recent Tutor Responses</h2>
+            <div class="list-group">
+              <!-- Tutor responses will be inserted here by dashboard.js -->
+            </div>
+          </section>
+
+          <section class="mb-5" id="clUpcomingSessions">
+            <h2 class="h5 mb-3">Upcoming Tutoring Sessions</h2>
+            <div class="list-group">
+              <!-- Tutoring sessions will be inserted here by dashboard.js -->
+            </div>
+          </section>
+
+          <section class="mb-5" id="clProgressTracker">
+            <h2 class="h5 mb-3">Your Academic Progress</h2>
+            <div class="card">
+              <div class="card-body">
+                <p class="text-muted small mb-3">Track your average marks per module.</p>
+                <!-- Progress tracker with marks will be inserted here by dashboard.js -->
+              </div>
+            </div>
+          </section>
+
+          <section class="mb-5" id="clRecommendedResources">
+            <h2 class="h5 mb-3">Recommended Resources</h2>
+            <div class="row g-4">
+              <!-- Resources will be inserted here by dashboard.js -->
+            </div>
+          </section>
+        </div>
+
+        <div class="col-lg-3">
+          <aside class="sidebar" id="clQuickActions">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Quick Actions</h5>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item"><a href="ask-question.html" class="text-decoration-none">Ask a New Question</a></li>
+                  <li class="list-group-item"><a href="schedule-session.html" class="text-decoration-none">Schedule a Session</a></li>
+                  <li class="list-group-item"><a href="profile.html" class="text-decoration-none">Update Profile</a></li>
+                  <li class="list-group-item"><a href="settings.html" class="text-decoration-none">Account Settings</a></li>
+                </ul>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </main>
+
+    <footer class="mt-auto py-4 border-top bg-light">
+      <div class="container text-center text-muted small">
+        <div>© 2025 CampusLearn™ – Peer-Powered Learning for Belgium Campus</div>
+        <div class="mt-2">Prototype demo. Not connected to real services.</div>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script type="module" src="../scripts/SupabaseClient.js"></script>
+    <script src="../assets/js/Dashboard.js"></script>
+  </body>
+</html>

@@ -1,0 +1,171 @@
+/* ==============================
+   CampusLearn™  —  Resources
+   Beige + Green  Edition
+   ============================== */
+
+:root{
+  /* palette */
+  --cl-bg: #fdfaf3;             /* soft beige background */
+  --cl-card: #ffffff;           /* white cards */
+  --cl-accent: #1b5e20;         /* deep green */
+  --cl-accent-light: #2e7d32;   /* lighter hover green */
+  --cl-border: #e4dfd1;         /* subtle beige border */
+  --cl-text: #2b2b2b;           /* dark readable text */
+  --cl-muted: #6b6b6b;
+  --cl-radius: 1rem;
+  --cl-shadow: 0 8px 16px rgba(0,0,0,.06);
+}
+
+/* ---- base ---- */
+body.bg-light{
+  background: var(--cl-bg) !important;
+  color: var(--cl-text);
+  font-family: "Segoe UI", "Inter", sans-serif;
+}
+
+/* headings */
+h1,h2,h3,h4,h5{ color: var(--cl-accent); letter-spacing:.2px; }
+
+/* ---- navbar ---- */
+.navbar{
+  background-color: var(--cl-accent) !important;
+}
+.navbar-brand, .nav-link, .navbar-text{
+  color:#fff !important;
+}
+.nav-link.active, .nav-link:hover{
+  background-color: var(--cl-accent-light) !important;
+  border-radius: .5rem;
+}
+.btn-outline-light{
+  border-color:#fff;
+}
+
+/* ---- header & search ---- */
+#pageRoot h2{
+  display:flex; align-items:center; gap:.6rem;
+}
+#pageRoot h2::after{
+  content:""; width:8px; height:8px; border-radius:50%;
+  background: var(--cl-accent);
+}
+
+#searchInput{
+  min-height:44px;
+  border-radius:.8rem;
+  border:1px solid var(--cl-border);
+  background:#fff;
+  transition:box-shadow .2s ease;
+}
+#searchInput:focus{
+  box-shadow:0 0 0 .25rem rgba(27,94,32,.25);
+  border-color:var(--cl-accent-light);
+}
+
+/* ---- filters ---- */
+#moduleFilter,#typeFilter{
+  min-height:42px;
+  border-radius:.7rem;
+  border:1px solid var(--cl-border);
+  background:#fff;
+  color:var(--cl-text);
+}
+#moduleFilter:focus,#typeFilter:focus{
+  border-color:var(--cl-accent);
+  box-shadow:0 0 0 .25rem rgba(27,94,32,.25);
+}
+
+/* ---- resource cards ---- */
+#resourceContainer .card{
+  border-radius:var(--cl-radius);
+  border:1px solid var(--cl-border);
+  background:var(--cl-card);
+  transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+}
+#resourceContainer .card:hover{
+  transform:translateY(-3px);
+  box-shadow:var(--cl-shadow);
+  border-color:var(--cl-accent-light);
+}
+#resourceContainer .card-title{ color:var(--cl-accent); }
+
+#resourceContainer .btn-outline-primary{
+  color:var(--cl-accent);
+  border-color:var(--cl-accent);
+}
+#resourceContainer .btn-outline-primary:hover{
+  background:var(--cl-accent);
+  color:#fff;
+}
+
+/* ---- upload section ---- */
+#uploadForm{
+  border:1px solid var(--cl-border);
+  border-radius:var(--cl-radius);
+  background:#fff;
+}
+#uploadForm .form-label{ font-weight:600; color:var(--cl-accent); }
+#uploadForm .form-control, #uploadForm .form-select{
+  border-radius:.7rem;
+  border:1px solid var(--cl-border);
+}
+#uploadForm .btn-primary{
+  background:var(--cl-accent);
+  border:none;
+}
+#uploadForm .btn-primary:hover{
+  background:var(--cl-accent-light);
+}
+
+/* ---- pager ---- */
+#pager{ gap:.5rem; }
+#pager .btn{
+  border-radius:999px;
+  border-color:var(--cl-accent);
+  color:var(--cl-accent);
+}
+#pager .btn:hover{
+  background:var(--cl-accent);
+  color:#fff;
+}
+
+/* ---- toast ---- */
+#clToast{
+  min-width:300px;
+  border-radius:.8rem;
+}
+.toast-header{
+  background:var(--cl-accent);
+  color:#fff;
+}
+.toast-header .btn-close{
+  filter:invert(1) grayscale(100%);
+}
+
+/* ---- footer ---- */
+footer{
+  color:var(--cl-muted);
+}
+
+/* ---- a11y focus ---- */
+.form-control:focus, .form-select:focus, .btn:focus{
+  outline:none;
+  box-shadow:0 0 0 .25rem rgba(27,94,32,.25) !important;
+}
+
+/* ---- responsive ---- */
+.w-md-50{ width:100%; }
+@media (min-width:768px){ .w-md-50{ width:50%; } }
+
+/* quick module dropdown */
+#quickModuleBtn {
+  background: var(--cl-accent);
+  border: none;
+  border-radius: .6rem;
+}
+#quickModuleBtn:hover { background: var(--cl-accent-light); }
+#quickModuleMenu .dropdown-item.active,
+#quickModuleMenu .dropdown-item:active {
+  background: var(--cl-accent);
+  color: #fff;
+}

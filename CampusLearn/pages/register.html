@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Register • CampusLearn™</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+    <link rel="icon" href="/assets/images/Favicon.png" type="image/x-icon">
+    <script src="../assets/js/Register.js"></script>  
+    <style>
+      body {
+        background-image: url('https://www.transparenttextures.com/patterns/cubes.png'), url('https://img.freepik.com/premium-vector/hand-drawn-set-elements-abstract-arrows-ribbons-hearts-stars-crowns-monsters-other-elements-hand-drawn-style-concept-design-scribble-illustration-vector-illustration_607987-917.jpg');
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        background-blend-mode: overlay;
+        background-size: auto, cover;
+        background-repeat: repeat, no-repeat;
+        background-color: #f5f7fa;
+      }
+      
+      nav {
+        z-index: 10;
+        height: 56px;
+      }
+      .login-wrapper {
+        flex: 1;
+        background-size: cover;
+        background-position: center;
+        backdrop-filter: blur(2px);
+        min-height: calc(100vh - 56px - 80px);
+        width: 100%;
+        z-index: 0;
+      }
+      .login-container {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px 0;
+        min-height: calc((100vh - 56px - 80px) * 1.1);
+      }
+      .login-card {
+        max-width: 800px;
+        width: 100%;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      .login-form {
+        padding: 40px;
+        background-color: #fff;
+      }
+      .login-info {
+        padding: 40px;
+        background-image: url('https://images.unsplash.com/photo-1496317899792-9d7dbcd928a1?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+        background-size: cover;
+        background-position: center;
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        position: relative;
+      }
+      .login-info::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(13, 110, 253, 0.5);
+        z-index: 1;
+      }
+      .login-info h2, .login-info p {
+        position: relative;
+        z-index: 2;
+      }
+      .login-info h2 {
+        color: #fff;
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+      }
+      .login-info p {
+        color: #d1d5db;
+      }
+      .btn-primary {
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+      }
+      .btn-primary:hover {
+        background-color: #0b5ed7;
+        border-color: #0b5ed7;
+      }
+      .btn-outline-secondary {
+        color: #6b7280;
+        border-color: #6b7280;
+      }
+      .btn-outline-secondary:hover {
+        color: #fff;
+        background-color: #6b7280;
+        border-color: #6b7280;
+      }
+      .form-label {
+        font-weight: 500;
+      }
+      @media (max-width: 768px) {
+        .login-card {
+          flex-direction: column;
+        }
+        .login-form, .login-info {
+          padding: 20px;
+        }
+        .login-wrapper {
+          min-height: calc(100vh - 56px - 80px);
+        }
+        .login-container {
+          min-height: calc((100vh - 56px - 80px) * 1.1);
+        }
+      }
+    </style>
+
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom sticky-top">
+      <div class="container">
+        <a class="navbar-brand fw-bold" href="../index.html">CampusLearn<span class="text-primary">™</span></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#clNav" aria-controls="clNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="clNav">
+          <!--<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item"><a class="nav-link" href="topics.html">Topics</a></li>
+            <li class="nav-item"><a class="nav-link" href="forum.html">Forum</a></li>
+            <li class="nav-item"><a class="nav-link" href="resources.html">Resources</a></li>
+            <li class="nav-item"><a class="nav-link" href="faq.html">FAQ</a></li>
+            <li class="nav-item"><a class="nav-link" href="messages.html">Messages</a></li>
+          </ul> -->
+          <div class="d-flex gap-2">
+            <a href="login.html" class="btn btn-outline-primary btn-sm">Log in</a>
+            <a href="register.html" class="btn btn-primary btn-sm">Register</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+    
+    <div class="login-wrapper">
+      <main class="container my-4 login-container">
+        <div class="row login-card">
+          <div class="col-md-6 login-form">
+            <h1 class="h3 mb-4">Student Registration</h1>
+            <form class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">First name</label>
+                <input type="text" class="form-control" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Last name</label>
+                <input type="text" class="form-control" required>
+              </div>
+              <div class="col-12">
+                <label class="form-label">Belgium Campus Email</label>
+                <input type="email" class="form-control" placeholder="name@belgiumcampus.ac.za" required>
+                <div class="form-text">Only <code>@belgiumcampus.ac.za</code> emails are allowed.</div>
+              </div>
+              <div class="col-12">
+                <label class="form-label">Programme</label>
+                <select class="form-select" required>
+                  <option selected disabled value="">Choose...</option>
+                  <option>BCom</option>
+                  <option>BIT</option>
+                  <option>Diploma</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <label class="form-label">Modules of interest</label>
+                <input type="text" class="form-control" placeholder="e.g., Software Engineering, Databases">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Password</label>
+                <input type="password" class="form-control" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Confirm Password</label>
+                <input type="password" class="form-control" required>
+              </div>
+              <div class="col-12">
+                <div class="d-flex gap-2">
+                  <button class="btn btn-primary" type="submit">Sign Up</button>
+                  <a class="btn btn-outline-secondary" href="login.html">Log In</a>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="col-md-6 login-info">
+            <h2>Join CampusLearn</h2>
+            <p>Become part of a vibrant learning community tailored for Belgium Campus students.</p>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <footer class="mt-5 py-4 border-top" style="height: 80px;">
+      <div class="container text-center text-muted small">
+        <div>© 2025 CampusLearn™ – Peer-Powered Learning for Belgium Campus</div>
+        <div class="mt-2">Prototype demo. Not connected to real services.</div>
+      </div>
+    </footer>
+
+
+
+  </body>
+</html>

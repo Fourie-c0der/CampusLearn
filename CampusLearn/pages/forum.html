@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Forum • CampusLearn™</title>
+
+    <!-- CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet" />
+    <link href="assets/css/styles.css" rel="stylesheet" />
+    <link rel="icon" href="/assets/images/Favicon.png" type="image/x-icon">
+    <style>
+      body {
+        background-image: url('https://www.transparenttextures.com/patterns/cubes.png'), url('https://img.freepik.com/premium-vector/hand-drawn-set-elements-abstract-arrows-ribbons-hearts-stars-crowns-monsters-other-elements-hand-drawn-style-concept-design-scribble-illustration-vector-illustration_607987-917.jpg');
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        background-blend-mode: overlay;
+        background-size: auto, cover;
+        background-repeat: repeat, no-repeat;
+        background-color: #f5f7fa;
+      }
+    </style>
+     <script src = "../assets/js/nav.js"></script>
+  </head>
+
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom">
+      <div class="container">
+        <a class="navbar-brand fw-bold" href="../index.html">CampusLearn<span class="text-primary">™</span></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#clNav" aria-controls="clNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="clNav">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item"><a class="nav-link" href="/pages/topics.html">Topics</a></li>
+            <li class="nav-item"><a class="nav-link active" href="/pages/forum.html">Forum</a></li>
+            <li class="nav-item"><a class="nav-link" href="/pages/resources.html">Resources</a></li>
+            <li class="nav-item"><a class="nav-link" href="/pages/faq.html">FAQ</a></li>
+            <li class="nav-item"><a class="nav-link" href="/pages/messages.html">Messages</a></li>
+          </ul>
+          <div class="d-flex gap-2">
+            <a href="/pages/login.html" class="btn btn-outline-primary btn-sm">Log in</a>
+            <a href="/pages/register.html" class="btn btn-primary btn-sm">Register</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container my-4">
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <h1 class="h4 mb-0">Public Forum</h1>
+        <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#askModal">
+          <i class="fa-regular fa-circle-question me-2"></i>Ask (Anonymous)
+        </button>
+      </div>
+
+      <!-- Tabs -->
+      <ul class="nav nav-pills mb-3" id="forumTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="trending-tab" data-bs-toggle="pill" data-bs-target="#trending" type="button" role="tab">
+            Trending
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="latest-tab" data-bs-toggle="pill" data-bs-target="#latest" type="button" role="tab">
+            Latest
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="unanswered-tab" data-bs-toggle="pill" data-bs-target="#unanswered" type="button" role="tab">
+            Unanswered
+          </button>
+        </li>
+      </ul>
+
+      <div class="tab-content">
+        <!-- Trending -->
+        <div class="tab-pane fade" id="trending" role="tabpanel" aria-labelledby="trending-tab">
+          <div id="trending-posts" class="mt-3"></div>
+          <div id="trending-empty" class="text-center text-muted small my-4 d-none">
+            No trending posts yet.
+          </div>
+        </div>
+
+        <!-- Latest -->
+        <div class="tab-pane fade show active" id="latest" role="tabpanel" aria-labelledby="latest-tab">
+          <div id="forum-alert" class="alert d-none" role="alert"></div>
+          <div id="forum-posts" class="mt-2"></div>
+          <div id="forum-empty" class="text-center text-muted small my-4 d-none">
+            No posts yet. Be the first to ask a question!
+          </div>
+        </div>
+
+        <!-- Unanswered -->
+        <div class="tab-pane fade" id="unanswered" role="tabpanel" aria-labelledby="unanswered-tab">
+          <div id="unanswered-posts" class="mt-3"></div>
+          <div id="unanswered-empty" class="text-center text-muted small my-4 d-none">
+            No unanswered questions right now.
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Ask Modal -->
+    <div class="modal fade" id="askModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Ask the community (anonymous)</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <form id="new-post-form" class="row g-3">
+              <div class="col-12">
+                <label for="post-title" class="form-label">Title</label>
+                <input id="post-title" class="form-control" placeholder="e.g., How do I approach ER modeling?" required />
+              </div>
+
+              <div class="col-12">
+                <label for="post-content" class="form-label">Your Question</label>
+                <textarea id="post-content" class="form-control" rows="4" placeholder="Ask anything…" required></textarea>
+              </div>
+
+              <div class="col-12 d-flex justify-content-between align-items-center">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="is-anonymous" checked />
+                  <label for="is-anonymous" class="form-check-label small">Post anonymously</label>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                  <i class="fa-solid fa-paper-plane me-2"></i>Post Question
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reply Modal -->
+    <div class="modal fade" id="replyModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Reply to Post</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <form id="reply-form">
+              <input type="hidden" id="reply-parent-id" />
+              <div class="mb-3">
+                <label for="reply-content" class="form-label">Your Reply</label>
+                <textarea id="reply-content" class="form-control" rows="3" placeholder="Write your reply..." required></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">
+                <i class="fa-solid fa-reply me-2"></i>Reply
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="mt-5 py-4 border-top">
+      <div class="container text-center text-muted small">
+        <div>© 2025 CampusLearn™ – Peer-Powered Learning for Belgium Campus</div>
+        <div class="mt-2">Prototype demo.</div>
+      </div>
+    </footer>
+
+<!-- JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/nav.js"></script>
+    <script src="../env.js"></script>
+    <script src="../assets/js/supabaseClient.js" type="module"></script>
+    <script src="../assets/js/ForumPost.js" type="module"></script>
+
+  </body>
+</html>

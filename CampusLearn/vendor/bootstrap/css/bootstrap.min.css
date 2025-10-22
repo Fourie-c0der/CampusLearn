@@ -1,0 +1,5 @@
+:root {
+  --radius: 12px;
+}
+.card, .btn { border-radius: var(--radius); }
+.navbar-brand { letter-spacing: .2px; }

@@ -1,0 +1,22 @@
+{
+  "name": "campuslearn",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "ChatbotAssistant.js",
+  "scripts": {
+    "cypress:open": "cypress open",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:env": "node scripts/generate-env.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.75.0"
+  },
+  "devDependencies": {
+    "cypress": "^15.4.0",
+    "dotenv": "^17.2.3"
+  }
+}
