@@ -4,19 +4,30 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Student Dashboard • CampusLearn™</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
-    <link href="assets/css/styles.css" rel="stylesheet">
-    <link rel="icon" href="/assets/images/Favicon.png" type="image/x-icon">
-    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="../assets/css/styles.css" rel="stylesheet">
+    <link rel="icon" href="../assets/images/Favicon.png" type="image/x-icon">
+    <script src = "../assets/js/nav.js"></script>
     <style>
       .sidebar {
         position: sticky;
-        top: 5rem; /* Adjusted to account for navbar height (~56px) */
+        top: 5rem;
         height: fit-content;
       }
       .progress {
         height: 1.5rem;
+        border-radius: 0.5rem;
+      }
+      .card {
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .btn-sm {
+        font-size: 0.875rem;
+        padding: 0.25rem 0.5rem;
       }
       body {
         background-image: url('https://www.transparenttextures.com/patterns/cubes.png'), url('https://img.freepik.com/premium-vector/hand-drawn-set-elements-abstract-arrows-ribbons-hearts-stars-crowns-monsters-other-elements-hand-drawn-style-concept-design-scribble-illustration-vector-illustration_607987-917.jpg');
@@ -28,15 +39,28 @@
         background-repeat: repeat, no-repeat;
         background-color: #f5f7fa;
       }
+      .avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 1rem;
+      }
+      h1.h4 {
+        font-weight: 600;
+      }
+      .list-group-item {
+        border: none;
+        border-bottom: 1px solid #e9ecef;
+      }
+      .progress-bar {
+        font-size: 0.9rem;
+        font-weight: 500;
+      }
     </style>
-     <script src = "../assets/js/nav.js"></script>
   </head>
   <body>
-  
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <script src = "../assets/js/Dashboard.js"></script>
-  
-    <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom sticky-top">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom sticky-top shadow-sm">
       <div class="container">
         <a class="navbar-brand fw-bold" href="../index.html">CampusLearn<span class="text-primary">™</span></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#clNav" aria-controls="clNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -58,128 +82,78 @@
       </div>
     </nav>
 
-    <main class="container my-4">
+    <main class="container my-5">
       <div class="row">
         <div class="col-lg-9">
-          <h1 class="h4 mb-4">Welcome, Student</h1>
+          <h1 class="h4 mb-4">Welcome to Your Dashboard</h1>
 
           <section id="clProfileSummary" class="mb-4">
             <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Profile Summary</h5>
-                <p><strong>Name:</strong> Jane Doe</p>
-                <p><strong>Program:</strong> BIT Year 2</p>
-                <p><strong>Active Topics:</strong> 5 | <strong>Messages:</strong> 12 | <strong>Tutoring Sessions:</strong> 3</p>
-                <a href="profile.html" class="btn btn-outline-primary btn-sm">Edit Profile</a>
+              <div class="card-body text-center">
+                <img src="https://via.placeholder.com/80" class="avatar" alt="Profile Avatar">
+                <!-- Profile summary will be inserted here by dashboard.js -->
               </div>
             </div>
           </section>
 
-          <section class="row g-4" id="clQuickAccess">
+          <section class="row g-4 mb-5" id="clQuickAccess">
             <div class="col-md-4">
               <div class="card h-100">
                 <div class="card-body">
-                  <h5 class="card-title"><i class="fa-solid fa-book me-2"></i>My Topics</h5>
-                  <p class="card-text">Create help topics or subscribe to existing ones.</p>
-                  <a href="topics.html" class="btn btn-primary btn-sm">Manage topics</a>
+                  <h5 class="card-title"><i class="bi bi-book me-2"></i>My Topics</h5>
+                  <p class="card-text">Create or subscribe to help topics for your studies.</p>
+                  <a href="topics.html" class="btn btn-primary btn-sm">Manage Topics</a>
                 </div>
               </div>
             </div>
             <div class="col-md-4">
               <div class="card h-100">
                 <div class="card-body">
-                  <h5 class="card-title"><i class="fa-solid fa-envelope me-2"></i>My Messages</h5>
-                  <p class="card-text">Continue private conversations with matched tutors.</p>
-                  <a href="messages.html" class="btn btn-outline-primary btn-sm">Go to messages</a>
+                  <h5 class="card-title"><i class="bi bi-envelope me-2"></i>My Messages</h5>
+                  <p class="card-text">Chat with tutors and peers in private conversations.</p>
+                  <a href="messages.html" class="btn btn-outline-primary btn-sm">Go to Messages</a>
                 </div>
               </div>
             </div>
             <div class="col-md-4">
               <div class="card h-100">
                 <div class="card-body">
-                  <h5 class="card-title"><i class="fa-solid fa-file-alt me-2"></i>Resources</h5>
-                  <p class="card-text">Access uploaded materials and interactive exercises.</p>
-                  <a href="resources.html" class="btn btn-outline-secondary btn-sm">Browse resources</a>
+                  <h5 class="card-title"><i class="bi bi-files me-2"></i>Resources</h5>
+                  <p class="card-text">Access study materials and interactive exercises.</p>
+                  <a href="resources.html" class="btn btn-outline-secondary btn-sm">Browse Resources</a>
                 </div>
               </div>
             </div>
           </section>
 
-          <section class="mt-5" id="clTutorResponses">
+          <section class="mb-5" id="clTutorResponses">
             <h2 class="h5 mb-3">Recent Tutor Responses</h2>
             <div class="list-group">
-              <a class="list-group-item list-group-item-action" href="topic-detail.html">SE202: Help with UML diagrams — <span class="text-muted">answered by Tutor A, 2 hours ago</span></a>
-              <a class="list-group-item list-group-item-action" href="topic-detail.html">DB101: Normalization question — <span class="text-muted">awaiting reply</span></a>
-              <a class="list-group-item list-group-item-action" href="topic-detail.html">CS101: Python loops issue — <span class="text-muted">answered by Tutor B, 1 day ago</span></a>
+              <!-- Tutor responses will be inserted here by dashboard.js -->
             </div>
           </section>
 
-          <section class="mt-5" id="clUpcomingSessions">
+          <section class="mb-5" id="clUpcomingSessions">
             <h2 class="h5 mb-3">Upcoming Tutoring Sessions</h2>
             <div class="list-group">
-              <div class="list-group-item">
-                <h6 class="mb-1">SE202: UML Diagram Review</h6>
-                <p class="mb-1 small">Tutor: Sarah M. | Date: Oct 12, 2025, 10:00 AM | Platform: Zoom</p>
-                <a href="session-detail.html?id=1" class="btn btn-outline-primary btn-sm">Join Session</a>
-              </div>
-              <div class="list-group-item">
-                <h6 class="mb-1">DB101: Database Normalization</h6>
-                <p class="mb-1 small">Tutor: James K. | Date: Oct 13, 2025, 2:00 PM | Platform: Microsoft Teams</p>
-                <a href="session-detail.html?id=2" class="btn btn-outline-primary btn-sm">Join Session</a>
-              </div>
+              <!-- Tutoring sessions will be inserted here by dashboard.js -->
             </div>
           </section>
 
-          <section class="mt-5" id="clProgressTracker">
-            <h2 class="h5 mb-3">Progress Tracker</h2>
+          <section class="mb-5" id="clProgressTracker">
+            <h2 class="h5 mb-3">Your Academic Progress</h2>
             <div class="card">
               <div class="card-body">
-                <h6>SE202: Software Engineering</h6>
-                <div class="progress mb-2">
-                  <div class="progress-bar bg-success" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">75% Complete</div>
-                </div>
-                <h6>DB101: Database Systems</h6>
-                <div class="progress mb-2">
-                  <div class="progress-bar bg-info" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50% Complete</div>
-                </div>
-                <a href="progress.html" class="btn btn-outline-secondary btn-sm">View All Progress</a>
+                <p class="text-muted small mb-3">Track your average marks per module.</p>
+                <!-- Progress tracker with marks will be inserted here by dashboard.js -->
               </div>
             </div>
           </section>
 
-          <section class="mt-5" id="clRecommendedResources">
+          <section class="mb-5" id="clRecommendedResources">
             <h2 class="h5 mb-3">Recommended Resources</h2>
             <div class="row g-4">
-              <div class="col-md-4">
-                <div class="card h-100">
-                  <img src="https://images.unsplash.com/photo-1614741118887-7a4ee193a5fa?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=687" class="card-img-top" alt="Python Guide">
-                  <div class="card-body">
-                    <h5 class="card-title">Python Programming Guide</h5>
-                    <p class="card-text">Comprehensive guide for Python basics.</p>
-                    <a href="resource.html?id=1" class="btn btn-outline-secondary btn-sm">View Resource</a>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="card h-100">
-                  <img src="https://images.unsplash.com/photo-1532012197267-da84d127e765" class="card-img-top" alt="UML Tutorial">
-                  <div class="card-body">
-                    <h5 class="card-title">UML Diagram Tutorial</h5>
-                    <p class="card-text">Step-by-step UML diagramming techniques.</p>
-                    <a href="resource.html?id=2" class="btn btn-outline-secondary btn-sm">View Resource</a>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="card h-100">
-                  <img src="https://images.unsplash.com/photo-1639066648921-82d4500abf1a?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=687" class="card-img-top" alt="Database Notes">
-                  <div class="card-body">
-                    <h5 class="card-title">Database Normalization Notes</h5>
-                    <p class="card-text">Key concepts in database normalization.</p>
-                    <a href="resource.html?id=3" class="btn btn-outline-secondary btn-sm">View Resource</a>
-                  </div>
-                </div>
-              </div>
+              <!-- Resources will be inserted here by dashboard.js -->
             </div>
           </section>
         </div>
@@ -202,14 +176,17 @@
       </div>
     </main>
 
-    <footer class="mt-5 py-4 border-top">
+    <footer class="mt-auto py-4 border-top bg-light">
       <div class="container text-center text-muted small">
         <div>© 2025 CampusLearn™ – Peer-Powered Learning for Belgium Campus</div>
         <div class="mt-2">Prototype demo. Not connected to real services.</div>
       </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script type="module" src="../scripts/SupabaseClient.js"></script>
+    <script src="../assets/js/Dashboard.js"></script>
   </body>
 </html>
