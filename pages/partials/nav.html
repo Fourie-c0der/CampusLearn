@@ -55,7 +55,7 @@
         document.getElementById('btnLogout')?.addEventListener('click', async () => {
           await supabase.auth.signOut();
           const base = location.href.replace(/[^/]+$/, "");
-          location.href = base + "login.html";
+          location.href = base + "../index.html";
         });
       } catch (_) { /* ignore */ }
     }
