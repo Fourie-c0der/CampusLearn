@@ -1,8 +1,9 @@
 document.addEventListener('DOMContentLoaded', async () => {
   const { supabase } = window;
 
-  // Hardcoded studentId for testing
-  const studentId = 52;
+  // Get studentId from localStorage or default to 52 for testing
+  const storedUser = localStorage.getItem("loggedInUser");
+  const studentId = storedUser ? JSON.parse(storedUser).student_id : 52;
 
   // Fetch student profile
   async function fetchProfile() {

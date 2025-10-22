@@ -9,6 +9,12 @@
     <link rel="icon" href="assets/images/Favicon.png" type="image/x-icon">
     <link href="assets/css/styles.css" rel="stylesheet">
     <style>
+      .navbar {
+        background-color: #f8f9fa !important;
+      }
+      .navbar-brand {
+        color: #000 !important;
+      }
       .bg-darkened::before {
         content: '';
         position: absolute;
@@ -74,15 +80,10 @@
   <body>
     <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom sticky-top">
       <div class="container">
-        <a class="navbar-brand fw-bold" href="../index.html">CampusLearn<span class="text-primary">™</span></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#clNav" aria-controls="clNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="clNav">
-          <div class="d-flex gap-2">
-            <a href="pages/login.html" class="btn btn-outline-primary btn-sm">Log in</a>
-            <a href="pages/register.html" class="btn btn-primary btn-sm">Register</a>
-          </div>
+        <a class="navbar-brand fw-bold text-dark" href="index.html">CampusLearn™</a>
+        <div class="d-flex gap-2">
+          <a href="pages/login.html" class="btn btn-outline-primary btn-sm">Log in</a>
+          <a href="pages/register.html" class="btn btn-primary btn-sm">Register</a>
         </div>
       </div>
     </nav>
@@ -142,7 +143,7 @@
               <div class="card-body">
                 <h5 class="card-title">Introduction to Programming</h5>
                 <p class="card-text">Discuss Python, Java, and C++ fundamentals with 120+ active threads.</p>
-                <a href="pages/topics.html?topic=programming" class="btn btn-outline-secondary btn-sm">Join Discussion</a>
+              <a href="pages/login.html" class="btn btn-outline-secondary btn-sm">Join Discussion</a>
               </div>
             </div>
           </div>
@@ -151,7 +152,7 @@
               <div class="card-body">
                 <h5 class="card-title">Financial Accounting</h5>
                 <p class="card-text">Explore balance sheets, ledgers, and more with 80+ active threads.</p>
-                <a href="pages/topics.html?topic=accounting" class="btn btn-outline-secondary btn-sm">Join Discussion</a>
+                <a href="pages/login.html" class="btn btn-outline-secondary btn-sm">Join Discussion</a>
               </div>
             </div>
           </div>

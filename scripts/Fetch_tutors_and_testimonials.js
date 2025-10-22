@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           <blockquote class="blockquote p-3 bg-light rounded">
             <p>${testimonial.content}</p>
             <footer class="blockquote-footer">
-              Student ID: ${testimonial.student_id}
+              Anonymous Student
             </footer>
           </blockquote>
         </div>
