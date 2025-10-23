@@ -26,20 +26,8 @@ body.bg-light{
 /* headings */
 h1,h2,h3,h4,h5{ color: var(--cl-accent); letter-spacing:.2px; }
 
-/* ---- navbar ---- */
-.navbar{
-  background-color: var(--cl-accent) !important;
-}
-.navbar-brand, .nav-link, .navbar-text{
-  color:#fff !important;
-}
-.nav-link.active, .nav-link:hover{
-  background-color: var(--cl-accent-light) !important;
-  border-radius: .5rem;
-}
-.btn-outline-light{
-  border-color:#fff;
-}
+/* ---- navbar ---- REMOVED - Using default Bootstrap styling */
+/* The navbar will now use standard bg-body-tertiary from Bootstrap */
 
 /* ---- header & search ---- */
 #pageRoot h2{

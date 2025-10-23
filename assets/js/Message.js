@@ -113,7 +113,8 @@ async function sendMessage(content, module = null) {
   }
   if (!content.trim()) return;
 
-  appendMessage(content, currentUser);
+  // Don't append immediately - let real-time handle it
+  // appendMessage(content, currentUser);
 
   const messageData = {
     sender: currentUser,
@@ -124,8 +125,12 @@ async function sendMessage(content, module = null) {
 
   const { error } = await supabase.from("messages").insert([messageData]);
 
-  if (error) console.error("❌ Message send failed:", error);
-  else console.log("📤 Message sent!");
+  if (error) {
+    console.error("❌ Message send failed:", error);
+    alert("Failed to send message. Please try again.");
+  } else {
+    console.log("📤 Message sent!");
+  }
 }
 
 // ---------- 5️⃣ REAL-TIME UPDATES ----------
@@ -141,24 +146,47 @@ function subscribeRealtime() {
         const msg = payload.new;
         console.log("📡 Incoming realtime message:", msg);
 
-        // Incoming message for current user
-        if (msg.recipient === currentUser) {
-          if (msg.sender === currentRecipient) {
+        // ✅ FIXED: Handle messages involving current user
+        const isIncoming = msg.recipient === currentUser;
+        const isOutgoing = msg.sender === currentUser;
+
+        if (!isIncoming && !isOutgoing) {
+          // Message doesn't involve current user, ignore it
+          return;
+        }
+
+        // If this message is part of the currently open conversation, display it
+        if (currentRecipient) {
+          const isPartOfCurrentChat = 
+            (msg.sender === currentUser && msg.recipient === currentRecipient) ||
+            (msg.sender === currentRecipient && msg.recipient === currentUser);
+
+          if (isPartOfCurrentChat) {
             appendMessage(msg.content, msg.sender);
-          } else {
-            const conv = addConversationItem(msg.sender, true);
-            conv.classList.add("fw-bold");
           }
         }
 
-        // Outgoing message by current user
-        if (msg.sender === currentUser) {
+        // Update conversation list
+        if (isIncoming && msg.sender !== currentRecipient) {
+          // New message from someone not in current chat
+          const conv = addConversationItem(msg.sender, true);
+          conv.classList.add("fw-bold");
+        } else if (isIncoming && msg.sender === currentRecipient) {
+          // Message from current chat partner - just ensure they're in the list
+          addConversationItem(msg.sender);
+        } else if (isOutgoing) {
+          // Message sent by current user - ensure recipient is in list
           addConversationItem(msg.recipient);
         }
       }
     )
     .subscribe((status) => {
       console.log("🔌 Realtime connection:", status);
+      if (status === 'SUBSCRIBED') {
+        console.log("✅ Successfully subscribed to real-time updates");
+      } else if (status === 'CHANNEL_ERROR') {
+        console.error("❌ Real-time subscription error");
+      }
     });
 }
 
@@ -219,7 +247,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     const recipient = document.getElementById("recipientInput").value.trim();
     const message = document.getElementById("messageText").value.trim();
     const module = document.getElementById("moduleSelect").value;
-
 
     currentRecipient = recipient;
     addConversationItem(recipient);

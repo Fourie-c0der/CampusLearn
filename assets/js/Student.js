@@ -62,13 +62,15 @@ document.addEventListener("DOMContentLoaded", () => {
           const user = data[0];
           // Save the user info in localStorage
           localStorage.setItem("loggedInUser", JSON.stringify(user));
+          
+          // ✅ FIXED: Store the email with the same key that Message.js expects
+          localStorage.setItem("currentUser", user.email);
 
           // Update navbar immediately
           updateNavbar(user);
 
           // Redirect after login
           window.location.href = "student-dashboard.html";
-          localStorage.setItem("loggedInUserEmail", emailInput);
         }
       } catch (err) {
         console.error("Unexpected error:", err);
@@ -77,4 +79,3 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
-
