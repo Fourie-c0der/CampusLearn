@@ -22,7 +22,7 @@ Responsive Design 📱: Built with Bootstrap for a seamless experience across de
 
 ### Clone the Repository 📥:
 
-git clone https://github.com/your-repo/campuslearn.git # Clone the CampusLearn repo
+git clone [https://github.com/your-repo/campuslearn.git](https://github.com/Fourie-c0der/CampusLearn.git) # Clone the CampusLearn repo
 cd campuslearn
 
 ### Install Dependencies 📦:
@@ -100,6 +100,8 @@ Bootstrap: https://cdn.jsdelivr.net/npm/bootstrap@5.3.3
 Font Awesome: https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2
 
 Supabase JS: https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2
+
+Vercel: https://campus-learn-nine.vercel.app/
 
 ## Contribution Guidelines 🤝
 
