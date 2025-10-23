@@ -182,7 +182,7 @@
       import sgMail from '@sendgrid/mail';
 
       // Set your SendGrid API key
-      sgMail.setApiKey('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');
+      sgMail.setApiKey(process.env.SEND_GRID_KEY);
 
       // Function to send login notification
       async function sendLoginNotification(userEmail, userName) {
