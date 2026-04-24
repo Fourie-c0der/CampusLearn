@@ -10,7 +10,25 @@ document.addEventListener("DOMContentLoaded", () => {
   const uploadForm = document.getElementById("uploadForm");
   const fileInput = document.getElementById("fileInput");
   const statusText = document.getElementById("uploadStatus");
+  const dropZone = document.getElementById("dropZone");
 
+  // Drag and drop functionality
+  dropZone.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    dropZone.classList.add('dragover');
+  });
+
+  dropZone.addEventListener('dragleave', () => {
+    dropZone.classList.remove('dragover');
+  });
+
+  dropZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropZone.classList.remove('dragover');
+    fileInput.files = e.dataTransfer.files;
+  });
+
+  // Handle file upload
   uploadForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -20,37 +38,174 @@ document.addEventListener("DOMContentLoaded", () => {
     const file = fileInput.files[0];
 
     if (!file) {
-      statusText.textContent = "⚠️ Please select a file first.";
+      showStatus("⚠️ Please select a file first.", "warning");
       return;
     }
 
-    statusText.textContent = "⏳ Uploading file...";
+    showStatus("⏳ Uploading file...", "info");
 
     try {
-      // Sanitize file name (remove special chars)
       const sanitizedFileName = file.name.replace(/[^a-zA-Z0-9_\-\.]/g, "_");
       const filePath = `${Date.now()}_${sanitizedFileName}`;
 
-      // Upload to bucket
       const { data, error: uploadError } = await supabase.storage
         .from(bucketName)
         .upload(filePath, file, { cacheControl: "3600", upsert: false });
 
       if (uploadError) throw uploadError;
 
-      // Get public URL
       const { data: publicData } = supabase.storage
         .from(bucketName)
         .getPublicUrl(filePath);
 
       const fileUrl = publicData.publicUrl;
 
-      statusText.textContent = `✅ File uploaded successfully! URL: ${fileUrl}`;
-      console.log("Uploaded file info:", { moduleCode, fileType, visibility, fileUrl });
+      // Add to resources grid
+      addResourceToGrid({
+        moduleCode,
+        fileType,
+        visibility,
+        fileUrl,
+        fileName: file.name
+      });
+
+      showStatus("✅ File uploaded successfully!", "success");
       uploadForm.reset();
     } catch (err) {
       console.error("Upload Error:", err);
-      statusText.textContent = "❌ Upload failed. Check console.";
+      showStatus("❌ Upload failed. Please try again.", "error");
     }
   });
+
+  // Handle resource requests
+  const requestForm = document.getElementById("requestForm");
+  const requestsContainer = document.getElementById("requestsContainer");
+
+  requestForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const request = {
+      moduleCode: document.getElementById("requestModuleCode").value.trim(),
+      type: document.getElementById("requestType").value,
+      priority: document.getElementById("requestPriority").value,
+      description: document.getElementById("requestDescription").value.trim(),
+      timestamp: new Date().toISOString(),
+      status: "open"
+    };
+
+    try {
+      const { data, error } = await supabase
+        .from('resource_requests')
+        .insert([request])
+        .select();
+
+      if (error) throw error;
+
+      addRequestToList(request);
+      requestForm.reset();
+      showStatus("✅ Request submitted successfully!", "success");
+    } catch (err) {
+      console.error("Request Error:", err);
+      showStatus("❌ Failed to submit request. Please try again.", "error");
+    }
+  });
+
+  // Helper function to show status messages
+  function showStatus(message, type) {
+    statusText.textContent = message;
+    statusText.className = `upload-status show alert alert-${type}`;
+    setTimeout(() => {
+      statusText.classList.remove('show');
+    }, 5000);
+  }
+
+  // Helper function to add resource card to grid
+  function addResourceToGrid(resource) {
+    const grid = document.getElementById('resourcesGrid');
+    const card = document.createElement('div');
+    card.className = 'resource-card animate-fade-in';
+    
+    const typeIcon = getFileTypeIcon(resource.fileType);
+    
+    card.innerHTML = `
+      <div class="card">
+        <div class="card-body">
+          <span class="resource-type-badge">${resource.fileType}</span>
+          <h5 class="card-title">
+            <i class="${typeIcon} me-2"></i>${resource.fileName}
+          </h5>
+          <p class="card-text">Module: ${resource.moduleCode}</p>
+          <a href="${resource.fileUrl}" class="btn btn-sm btn-primary" target="_blank">
+            <i class="fas fa-download me-1"></i>Download
+          </a>
+        </div>
+      </div>
+    `;
+    
+    grid.prepend(card);
+  }
+
+  // Helper function to get file type icon
+  function getFileTypeIcon(fileType) {
+    const icons = {
+      pdf: 'fas fa-file-pdf',
+      doc: 'fas fa-file-word',
+      image: 'fas fa-file-image',
+      video: 'fas fa-file-video',
+      interactive: 'fas fa-file-code'
+    };
+    return icons[fileType] || 'fas fa-file';
+  }
+
+  function addRequestToList(request) {
+    const requestCard = document.createElement('div');
+    requestCard.className = `request-card priority-${request.priority} animate-fade-in`;
+    
+    requestCard.innerHTML = `
+      <div class="d-flex justify-content-between align-items-start">
+        <h6 class="mb-1">${request.moduleCode}
+          <span class="request-badge bg-${getPriorityColor(request.priority)}">
+            ${request.priority.toUpperCase()}
+          </span>
+        </h6>
+        <small class="request-meta">
+          ${new Date(request.timestamp).toLocaleDateString()}
+        </small>
+      </div>
+      <p class="mb-1">${request.description}</p>
+      <small class="request-meta">
+        <i class="fas fa-folder me-1"></i>${request.type}
+      </small>
+    `;
+    
+    requestsContainer.prepend(requestCard);
+  }
+
+  function getPriorityColor(priority) {
+    const colors = {
+      high: 'danger',
+      medium: 'warning',
+      low: 'info'
+    };
+    return colors[priority] || 'secondary';
+  }
+
+  // Load existing requests on page load
+  async function loadExistingRequests() {
+    try {
+      const { data, error } = await supabase
+        .from('resource_requests')
+        .select('*')
+        .order('timestamp', { ascending: false })
+        .limit(5);
+
+      if (error) throw error;
+
+      data.forEach(request => addRequestToList(request));
+    } catch (err) {
+      console.error("Error loading requests:", err);
+    }
+  }
+
+  loadExistingRequests();
 });
